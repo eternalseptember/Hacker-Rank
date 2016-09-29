@@ -27,6 +27,7 @@ def InsertNth(head, data, position):
 	else:
 		# travel to position
 		tail = head
+		# this loop doesn't run if the position is 1
 		for i in range(1, position):
 			tail = tail.next
 
