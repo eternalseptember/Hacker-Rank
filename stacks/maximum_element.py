@@ -45,11 +45,12 @@ n = 10
 test_seq = ['1 97', '2', '1 20', '2', '1 26', '1 20', '2', '3', '1 91', '3']
 
 for i in range(n):
+	# query = input()
 	try:
-		# queryType, x = (int(temp) for temp in input().split(' '))
+		# queryType, x = (int(temp) for temp in query.split(' '))
 		queryType, x = (int(temp) for temp in test_seq[i].split(' '))
 	except ValueError:
-		# queryType = int(input())
+		# queryType = int(query)
 		queryType = int(test_seq[i])
 
 
