@@ -16,20 +16,26 @@ The next N lines each contain an above mentioned query.
 class Stack:
 	# class variable, because only one stack is necessary
 	stack = []
+	maxNum = 0
 
 	def push(self, item):
 		self.stack.append(item)
+		if item > self.maxNum:
+			self.maxNum = item
 
 	def pop(self):
-		return self.stack.pop()
+		item = self.stack.pop()
+
+		if self.maxNum == item:
+			if len(self.stack) > 0:
+				self.maxNum = max(self.stack)
+			else:
+				self.maxNum = 0
+
+		return item
 
 	def print_item(self):
-		item = 0
-		for i in self.stack:
-			if i > item:
-				item = i
-
-		print(item)
+		print(self.maxNum)
 
 
 stack = Stack()
