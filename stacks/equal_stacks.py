@@ -34,31 +34,27 @@ def FindHeight(stack1, stack2, stack3):
 	for stack in [stack1, stack2, stack3]:
 		stack.reverse()
 		stacks.append(stack)
-		heights.append(totalHeight(stack))
 
+		height = 0
+		for item in stack:
+			height += item
+
+		heights.append(height)
+
+	# Everything else...
 	matching = False
 	while matching is False:
-		heights = [totalHeight(stack) for stack in [stack1, stack2, stack3]]
-		# print('Heights: {0}'.format(heights))
 		tallest = max(heights)
 		howMany = heights.count(tallest)
-		# print('Tallest: {0}  How Many? {1}'.format(tallest, howMany))
 
 		if howMany == 3:
 			matching = True
 		else:
 			tallestIndex = heights.index(tallest)
-			# print(stacks)
-			stacks[tallestIndex].pop()
+			item = stacks[tallestIndex].pop()
+			heights[tallestIndex] -= item
 
 	return tallest
-
-
-def totalHeight(stack):
-	height = 0
-	for item in stack:
-		height += item
-	return height
 
 
 
