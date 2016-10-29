@@ -25,6 +25,7 @@ def topView(node):
 
 
 # Binary Tree Setup
+# test case 1: 1 5 3 2 7
 node9 = Node(9)
 node1 = Node(1, None, node9)
 node4 = Node(4)
@@ -36,3 +37,26 @@ node2 = Node(2, node6, node7)
 node3 = Node(3, node5, node2)
 
 topView(node3)
+
+# test case 2: 2 1 3 6
+node6 = Node(6)
+node5 = Node(5, None, node6)
+node4 = Node(4, None, node5)
+node2 = Node(2, None, node4)
+node3 = Node(3)
+node1 = Node(1, node2, node3)
+
+topView(node1)
+
+# test case 3: 8 4 2 1 3 7
+node8 = Node(8)
+node9 = Node(9)
+node4 = Node(4, node8, node9)
+node5 = Node(5)
+node2 = Node(2, node4, node5)
+node6 = Node(6)
+node7 = Node(7)
+node3 = Node(3, node6, node7)
+node1 = Node(1, node2, node3)
+
+topView(node1)
