@@ -15,9 +15,46 @@ class Node(object):
 		return str(self.data)
 
 
-def verticalOrder(node):
-	# stuff here
+treeMap = []
 
+
+def verticalOrder(node, level=0):
+	if node is None:
+		return None
+
+
+	level -= 1
+	if node.left is not None:
+		verticalOrder(node.left, level)
+
+	level += 1
+	treeMap.append([level, node.data])
+
+	if node.right is not None:
+		level += 1
+		verticalOrder(node.right, level)
+
+	return treeMap
+
+
+def verticalOrderPrint(treeMap):
+	# get levels
+	levels = []
+	for i in treeMap:
+		if i[0] not in levels:
+			levels.append(i[0])
+
+	levels.sort()
+	treeLevels = []
+	for i in levels:
+		sameLevel = []
+		for j in treeMap:
+			if j[0] == i:
+				sameLevel.append(j[1])
+		treeLevels.append(sameLevel)
+
+	for i in treeLevels:
+		print(i)
 
 
 
@@ -31,4 +68,10 @@ node7 = Node(7)
 node3 = Node(3, node6, node7)
 node1 = Node(1, node2, node3)
 
-verticalOrder(node1)
+treeMap = verticalOrder(node1)
+
+for i in treeMap:
+	print(i)
+
+print()
+verticalOrderPrint(treeMap)
