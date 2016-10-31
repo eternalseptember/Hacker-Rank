@@ -25,9 +25,8 @@ def levelOrder(root):
 	print(root.data, end=' ')
 
 	if len(queue) > 0:
-		queue.reverse()
-		nextNode = queue.pop()
-		queue.reverse()
+		nextNode = queue.index(0)
+		queue.remove(0)
 		levelOrder(nextNode)
 
 
@@ -40,4 +39,5 @@ node1 = Node(1)
 node2 = Node(2, node1, None)
 node3 = Node(3, node2, node5)
 
+# test case: 3 2 5 1 4 7
 levelOrder(node3)

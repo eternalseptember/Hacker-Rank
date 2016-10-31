@@ -1,5 +1,7 @@
 """
-This problem doesn't actually exist in hackerrank... yet...
+This problem doesn't actually exist in hackerrank...
+Think I might need this to form a base for another answer.
+Not yet verified to pass all test cases in hackerrank.
 
 Given a node to a tree, print the vertical order path
 """
@@ -21,7 +23,6 @@ treeMap = []
 def verticalOrder(node, level=0):
 	if node is None:
 		return None
-
 
 	level -= 1
 	if node.left is not None:
@@ -69,9 +70,8 @@ node3 = Node(3, node6, node7)
 node1 = Node(1, node2, node3)
 
 treeMap = verticalOrder(node1)
+#for i in treeMap:
+#	print(i)
+#print()
 
-for i in treeMap:
-	print(i)
-
-print()
 verticalOrderPrint(treeMap)
