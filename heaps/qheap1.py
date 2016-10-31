@@ -23,7 +23,7 @@ For each query of type 3, print the minimum value on a single line.
 class Heap:
 	def __init__(self):
 		self.heap = []
-		self.min = 100000
+		self.min = 1000000000
 
 	def add(self, value):
 		self.heap.append(value)
@@ -38,7 +38,7 @@ class Heap:
 			if (len(self.heap) > 0):
 				self.min = min(self.heap)
 			else:
-				self.min = 100000
+				self.min = 1000000000
 
 	def print_min(self):
 		print(self.min)
@@ -50,23 +50,25 @@ class Heap:
 
 # Q = int(input().strip())
 
-Q = 5
-in_str = ['1 4', '1 9', '3', '2 4', '3']
+Q = [5]
+in_str = [['1 4', '1 9', '3', '2 4', '3']]
+num_of_test_cases = len(Q)
 
 heap = Heap()
-for i in range(Q):
-	# query = input().strip()
-	query = in_str[i]
+for i in range(num_of_test_cases):
+	for j in range(Q[i]):
+		# query = input().strip()
+		query = in_str[i][j]
 
-	try:
-		query_type, value = (int(temp) for temp in query.split(' '))
-	except:
-		query_type = int(query.strip())
+		try:
+			query_type, value = (int(temp) for temp in query.split(' '))
+		except:
+			query_type = int(query.strip())
 
-	if query_type == 1:
-		heap.add(value)
-	elif query_type == 2:
-		heap.delete(value)
-	else:
-		heap.print_min()
+		if query_type == 1:
+			heap.add(value)
+		elif query_type == 2:
+			heap.delete(value)
+		else:
+			heap.print_min()
 
