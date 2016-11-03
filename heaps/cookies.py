@@ -32,12 +32,14 @@ def cookies_arrange(cookies, min_sweetness):
 		cookie1 = cookies_list.pop(0)
 		cookie2 = cookies_list.pop(0)
 		new_cookie = cookie_formula(cookie1, cookie2)
-		cookies_list.append(new_cookie)
-		cookies_list.sort()
 		steps += 1
+
+		cookies_list.insert(0, new_cookie)
+		cookies_list.sort()
 
 		if len(cookies_list) == 1:
 			break
+
 
 	if cookies_list[0] >= min_sweetness:
 		return steps
