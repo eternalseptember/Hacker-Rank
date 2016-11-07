@@ -15,15 +15,17 @@ On each line, output the entire array at every iteration.
 """
 
 
-def insertion_sort(arr):
-	# stuff here
-	print(*arr, sep=' ')
+def insertion_sort(arr, length):
+	sorted = arr[:]
 
+	for i in range(1, length):
+		for j in range(i - 1, -1, -1):
+			if sorted[j + 1] < sorted[j]:
+				sorted[j + 1], sorted[j] = sorted[j], sorted[j + 1]
+			else:
+				break
 
-
-
-
-
+		print(*sorted, sep=' ')
 
 
 
@@ -34,5 +36,5 @@ s = 6
 arr_str = '1 4 3 5 6 2'
 arr = [int(temp) for temp in arr_str.split(' ')]
 
-insertion_sort(arr)
+insertion_sort(arr, s)
 
