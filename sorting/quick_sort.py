@@ -14,7 +14,21 @@ Each integer should be separated by a single space.
 
 def quick_sort(arr):
 	# stuff here
-	
+	p = arr[0]
+	left = []
+	equal = []
+	right = []
+
+	for i in arr:
+		if i < p:
+			left.append(i)
+		elif i > p:
+			right.append(i)
+		else:
+			equal.append(i)
+
+	new_list = left + equal + right
+	print(*new_list, sep=' ')
 
 
 
