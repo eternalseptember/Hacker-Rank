@@ -17,22 +17,11 @@ Print every partitioned sub-array on a new line.
 """
 
 
-def quick_sort(arr):
-	left, p, right = partition(arr)
-	
-
-
-
-	sorted_list = left + p + right
-	print(*sorted_list, sep=' ')
-
-
-
 def partition(arr):
 	if (len(arr) <= 1):
-		return None
+		return arr
 
-	p = [arr.pop()]
+	p = [arr.pop(0)]
 	left = []
 	right = []
 
@@ -42,15 +31,19 @@ def partition(arr):
 		else:
 			right.append(i)
 
-	new_list = left + p + right
-	print(*new_list, sep=' ')
 
-	return left, p, right
+	left = partition(left)
+	right = partition(right)
+
+	new_arr = left + p + right
+	print(*new_arr, sep=' ')
+
+	return new_arr
 
 
 
 #n = int(input().strip())
-#arr = [int(temp) for temp in input.split(' ')]
+#arr = [int(temp) for temp in input().split(' ')]
 
 
 n = 7
