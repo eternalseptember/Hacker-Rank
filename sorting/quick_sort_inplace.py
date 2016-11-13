@@ -13,10 +13,6 @@ Print the entire array on a new line at the end of every partitioning method.
 """
 
 
-def quick_sort_inplace(arr):
-	pivot = partition(arr, 0, len(arr)-1)
-
-
 def partition(arr, beg_index, pivot_index):
 	size = len(arr[beg_index:pivot_index + 1])
 	if size <= 1:
@@ -42,11 +38,11 @@ def partition(arr, beg_index, pivot_index):
 	if larger_partition_index is None:
 		# the pivot item is the largest item
 		# so redo this partition, but moving the pivot to the left one position
-		partition(arr, beg_index, pivot_index-1)
+		partition(arr, beg_index, pivot_index - 1)
 
 	if larger_partition_index is not None:
-		left = partition(arr, beg_index, larger_partition_index-1)
-		right = partition(arr, larger_partition_index+1, pivot_index)
+		partition(arr, beg_index, larger_partition_index - 1)
+		partition(arr, larger_partition_index + 1, pivot_index)
 
 	return larger_partition_index
 
@@ -63,7 +59,7 @@ in_1 = ['1 3 9 8 2 7 5', '9 8 6 7 3 5 4 1 2']
 
 for i in range(len(n)):
 	arr = [int(temp) for temp in in_1[i].split(' ')]
-	quick_sort_inplace(arr)
+	partition(arr, 0, len(arr) - 1)
 	print()
 
 """
