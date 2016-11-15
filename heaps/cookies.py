@@ -23,19 +23,26 @@ cookie's sweetness >= K. Output -1 if this isn't possible.
 """
 
 
+import heapq
+
+
 def cookies_arrange(cookies, min_sweetness):
 	cookies_list = cookies[:]
-	cookies_list.sort()
+	# cookies_list.sort()
+	heapq.heapify(cookies_list)
 
 	steps = 0
 	while (cookies_list[0] < min_sweetness):
-		cookie1 = cookies_list.pop(0)
-		cookie2 = cookies_list.pop(0)
+		# cookie1 = cookies_list.pop(0)
+		# cookie2 = cookies_list.pop(0)
+		cookie1 = heapq.heappop(cookies_list)
+		cookie2 = heapq.heappop(cookies_list)
 		new_cookie = cookie_formula(cookie1, cookie2)
 		steps += 1
 
-		cookies_list.insert(0, new_cookie)
-		cookies_list.sort()
+		# cookies_list.insert(0, new_cookie)
+		# cookies_list.sort()
+		heapq.heappush(cookies_list, new_cookie)
 
 		if len(cookies_list) == 1:
 			break
