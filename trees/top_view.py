@@ -18,7 +18,23 @@ class Node(object):
 
 
 def topView(node):
-	# stuff here
+	leftView(node.left)
+	print(node.data, end=' ')
+	rightView(node.right)
+
+
+def leftView(node):
+	if node is None:
+		return
+	leftView(node.left)
+	print(node.data, end=' ')
+
+
+def rightView(node):
+	if node is None:
+		return
+	rightView(node.right)
+	print(node.data, end=' ')
 
 
 
@@ -37,6 +53,11 @@ node2 = Node(2, node6, node7)
 node3 = Node(3, node5, node2)
 
 topView(node3)
+
+
+"""
+# The following test cases came from other sources, not
+# guaranteed to be following hackerrank's definitions.
 
 # test case 2: 2 1 3 6
 node6 = Node(6)
@@ -60,3 +81,4 @@ node3 = Node(3, node6, node7)
 node1 = Node(1, node2, node3)
 
 topView(node1)
+"""
