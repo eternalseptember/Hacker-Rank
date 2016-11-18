@@ -33,9 +33,8 @@ def leftView(node):
 def rightView(node):
 	if node is None:
 		return
-	rightView(node.right)
 	print(node.data, end=' ')
-
+	rightView(node.right)
 
 
 
