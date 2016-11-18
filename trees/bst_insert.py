@@ -19,9 +19,28 @@ class Node(object):
 		return str(self.data)
 
 
+queue = []
+def levelOrder(root):
+	if root.left is not None:
+		queue.append(root.left)
+	if root.right is not None:
+		queue.append(root.right)
+
+	print(root.data, end=' ')
+
+	if len(queue) > 0:
+		nextNode = queue.pop(0)
+		levelOrder(nextNode)
+
+
 def insert(root, value):
-	new_node = Node(value)
-	print(new_node)
+	if root is None:
+		return Node(value)
+	elif root.data > value:
+		root.left = insert(root.left, value)
+	else:
+		root.right = insert(root.right, value)
+	return root
 
 
 
@@ -36,4 +55,4 @@ node7 = Node(7)
 node4 = Node(4, node2, node7)
 
 insert(node4, 6)
-
+levelOrder(node4)

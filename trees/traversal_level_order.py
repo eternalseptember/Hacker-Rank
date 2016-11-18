@@ -25,8 +25,7 @@ def levelOrder(root):
 	print(root.data, end=' ')
 
 	if len(queue) > 0:
-		nextNode = queue.index(0)
-		queue.remove(0)
+		nextNode = queue.pop(0)
 		levelOrder(nextNode)
 
 
