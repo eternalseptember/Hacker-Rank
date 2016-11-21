@@ -37,5 +37,6 @@ v1 = 1
 v2 = 7
 
 lca = lowest_common_ancestor(node4, v1, v2)
+# should be 4
 print(lca)
 
