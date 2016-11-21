@@ -19,8 +19,24 @@ class Node(object):
 
 
 def lowest_common_ancestor(root, val1, val2):
-	print()
+	smaller_value = None
+	greater_value = None
 
+	if val1 > val2:
+		smaller_value = val2
+		greater_value = val1
+	else:
+		smaller_value = val1
+		greater_value = val2
+
+	if (root.data < smaller_value) and (root.data < greater_value):
+		next_node = root.right
+		return lowest_common_ancestor(next_node, val1, val2)
+	elif (root.data > smaller_value) and (root.data > greater_value):
+		next_node = root.left
+		return lowest_common_ancestor(next_node, val1, val2)
+	elif (root.data >= smaller_value) and (root.data <= greater_value):
+		return root
 
 
 

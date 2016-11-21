@@ -9,7 +9,7 @@ First line of input contains N, number of nodes in tree. Then
 N lines follow. Here each of ith line (1 <= i <= N) contains
 two integers, a b, where a is the index of left child, and b
 is the index of right child of ith node. -1 is used to represent
-null node. 
+null node.
 
 Next line contain an integer, T. Then again T lines follows. Each
 of these line contains an integer K.
