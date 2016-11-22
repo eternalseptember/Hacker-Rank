@@ -26,9 +26,21 @@ class Node(object):
 		return str(self.data)
 
 
-def decode_huff(node, str):
-	# stuff here
-	print(node)
+def decode_huff(root, str):
+	decoded_string = ''
+	next_node = root
+
+	for i in str:
+		if i == '0':
+			next_node = next_node.left
+		else:
+			next_node = next_node.right
+
+		if (next_node.left is None) and (next_node.right is None):
+			decoded_string += next_node.data
+			next_node = root
+
+	print(decoded_string)
 
 
 
