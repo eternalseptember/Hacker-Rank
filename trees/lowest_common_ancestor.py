@@ -30,11 +30,9 @@ def lowest_common_ancestor(root, val1, val2):
 		greater_value = val2
 
 	if (root.data < smaller_value) and (root.data < greater_value):
-		next_node = root.right
-		return lowest_common_ancestor(next_node, val1, val2)
+		return lowest_common_ancestor(root.right, val1, val2)
 	elif (root.data > smaller_value) and (root.data > greater_value):
-		next_node = root.left
-		return lowest_common_ancestor(next_node, val1, val2)
+		return lowest_common_ancestor(root.left, val1, val2)
 	elif (root.data >= smaller_value) and (root.data <= greater_value):
 		return root
 
