@@ -14,6 +14,8 @@ def insertion_sort(l):
 			j -= 1
 		l[j + 1] = key
 
+	print(*l, sep=' ')
+
 
 #m = int(input().strip())
 #ar = [int(i) for i in input().strip().split()]
@@ -23,4 +25,4 @@ in_str = '1 4 3 5 6 2'
 ar = [int(i) for i in in_str.split()]
 
 insertion_sort(ar)
-print(" ".join(map(str, ar)))
+#print(" ".join(map(str, ar)))
