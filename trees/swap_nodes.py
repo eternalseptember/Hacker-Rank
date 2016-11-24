@@ -30,28 +30,65 @@ class Node(object):
 		return str(self.data)
 
 
-def inOrder(root):
+queue = []
+def insert(root, value, left=None, right=None):
+	if (left == -1) and (right == -1):
+		# this node was already created
+		return root
+
+	left_node = None
+	right_node = None
+	if left > 0:
+		left_node = Node(left)
+	if right > 0:
+		right_node = Node(right)
+
+	if root is None:
+		# print('root: {0}  left: {1}  right: {2}'.format(value, left_node, right_node))
+		return Node(value, left_node, right_node)
+	else:
+		if root.data == value:
+			queue.clear()
+			root.left = left_node
+			root.right = right_node
+			# print('root: {0}  left: {1}  right: {2}'.format(root.data, root.left, root.right))
+		else:
+			if root.left is not None:
+				queue.append(root.left)
+			if root.right is not None:
+				queue.append(root.right)
+
+			next_node = queue.pop(0)
+			insert(next_node, value, left, right)
+
+		return root
+
+
+def in_order(root):
 	if root.left is not None:
-		inOrder(root.left)
+		in_order(root.left)
 	print(root.data, end=' ')
 	if root.right is not None:
-		inOrder(root.right)
+		in_order(root.right)
 
 
-def swapping_nodes(k):
+def swapping_nodes(root, k):
 	# stuff here
-	print(k)
+	temp = root
 
 
 """
 n = int(input().strip())
+root = None
+
 for i in range(n):
 	left, right = (int(temp) for temp in input().split(' '))
+	root = insert(root, i + 1, left, right)
 
 t = int(input().strip())
 for i in range(t):
 	k = int(input().strip())
-	swapping_nodes(k)
+	swapping_nodes(root, k)
 """
 
 
@@ -63,16 +100,70 @@ for i in range(t):
 n = 3
 in_str_1 = ['2 3', '-1 -1', '-1 -1']
 
+root = None
 for i in range(n):
 	left, right = (int(temp) for temp in in_str_1[i].split(' '))
-	# print(left, right)
+	root = insert(root, i + 1, left, right)
 
+in_order(root)
+print()
 
 t = 2
 in_str_2 = ['1', '1']
 
 for i in range(t):
 	k = int(in_str_2[i].strip())
-	swapping_nodes(k)
+	swapping_nodes(root, k)
+
+
+
+
+# setting up test case 2
+# expected answer:
+# 4 2 1 5 3
+
+n = 5
+in_str_1 = ['2 3', '-1 4', '-1 5', '-1 -1', '-1 -1']
+
+root = None
+for i in range(n):
+	left, right = (int(temp) for temp in in_str_1[i].split(' '))
+	root = insert(root, i + 1, left, right)
+
+in_order(root)
+print()
+
+t = 1
+in_str_2 = ['2']
+
+for i in range(t):
+	k = int(in_str_2[i].strip())
+	swapping_nodes(root, k)
+
+
+
+
+# setting up test case 3
+# expected answer:
+# 2 9 6 4 1 3 7 5 11 8 10
+# 2 6 9 4 1 3 7 5 10 8 11
+
+n = 11
+in_str_1 = ['2 3', '4 -1', '5 -1', '6 -1', '7 8', '-1 9', '-1 -1', '10 11', '-1 -1', '-1 -1', '-1 -1']
+
+root = None
+for i in range(n):
+	left, right = (int(temp) for temp in in_str_1[i].split(' '))
+	root = insert(root, i + 1, left, right)
+
+in_order(root)
+print()
+
+t = 2
+in_str_2 = ['2', '4']
+
+for i in range(t):
+	k = int(in_str_2[i].strip())
+	swapping_nodes(root, k)
 
 
