@@ -21,10 +21,11 @@ the inorder traversal of the current state of tree.
 
 
 class Node(object):
-	def __init__(self, data=None, left_node=None, right_node=None):
+	def __init__(self, data=None, left_node=None, right_node=None, depth=None):
 		self.data = data
 		self.left = left_node
 		self.right = right_node
+		self.depth = depth
 
 	def __str__(self):
 		return str(self.data)
@@ -45,10 +46,21 @@ def insert(root, value, left=None, right=None):
 
 	if root is None:
 		# print('root: {0}  left: {1}  right: {2}'.format(value, left_node, right_node))
-		return Node(value, left_node, right_node)
+		if left_node is not None:
+			left_node.depth = 2
+		if right_node is not None:
+			right_node.depth = 2
+
+		return Node(value, left_node, right_node, 1)
 	else:
 		if root.data == value:
 			queue.clear()
+
+			if left_node is not None:
+				left_node.depth = root.depth + 1
+			if right_node is not None:
+				right_node.depth = root.depth + 1
+
 			root.left = left_node
 			root.right = right_node
 			# print('root: {0}  left: {1}  right: {2}'.format(root.data, root.left, root.right))
@@ -67,9 +79,12 @@ def insert(root, value, left=None, right=None):
 def in_order(root):
 	if root.left is not None:
 		in_order(root.left)
-	print(root.data, end=' ')
+	print('{0} ({1})'.format(root.data, root.depth), end=' ')
 	if root.right is not None:
 		in_order(root.right)
+
+
+
 
 
 def swapping_nodes(root, k):
