@@ -20,6 +20,10 @@ the inorder traversal of the current state of tree.
 """
 
 
+import sys
+sys.setrecursionlimit(15000)
+
+
 class Node(object):
 	def __init__(self, data=None, left_node=None, right_node=None, depth=None):
 		self.data = data
@@ -91,7 +95,6 @@ def in_order_queue(root):
 def swapping_nodes(root, k):
 	in_order_queue(root)
 	swap(k)
-
 	print_in_order(root)
 	print()
 
@@ -101,7 +104,7 @@ def swap(k):
 		node = queue.pop(0)
 		if (node.depth % k == 0):
 			node.left, node.right = node.right, node.left
-	
+
 
 
 """
