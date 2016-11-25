@@ -33,37 +33,32 @@ class Node(object):
 
 queue = []
 def insert(root, value, left=None, right=None):
-	if (left == -1) and (right == -1):
+	if (left == -1) and (right == -1) and (root is not None):
 		# this node was already created
 		return root
 
 	left_node = None
 	right_node = None
-	if left > 0:
-		left_node = Node(left)
-	if right > 0:
-		right_node = Node(right)
 
 	if root is None:
-		# print('root: {0}  left: {1}  right: {2}'.format(value, left_node, right_node))
-		if left_node is not None:
-			left_node.depth = 2
-		if right_node is not None:
-			right_node.depth = 2
+		if left > 0:
+			left_node = Node(left, depth=2)
+		if right > 0:
+			right_node = Node(right, depth=2)
 
 		return Node(value, left_node, right_node, 1)
+
 	else:
 		if root.data == value:
-			queue.clear()
-
-			if left_node is not None:
-				left_node.depth = root.depth + 1
-			if right_node is not None:
-				right_node.depth = root.depth + 1
+			if left > 0:
+				left_node = Node(left, depth=root.depth + 1)
+			if right > 0:
+				right_node = Node(right, depth=root.depth + 1)
 
 			root.left = left_node
 			root.right = right_node
-			# print('root: {0}  left: {1}  right: {2}'.format(root.data, root.left, root.right))
+
+			queue.clear()
 		else:
 			if root.left is not None:
 				queue.append(root.left)
@@ -76,20 +71,37 @@ def insert(root, value, left=None, right=None):
 		return root
 
 
-def in_order(root):
+def print_in_order(root):
 	if root.left is not None:
-		in_order(root.left)
-	print('{0} ({1})'.format(root.data, root.depth), end=' ')
+		print_in_order(root.left)
+	print(root.data, end=' ')
+	# print('{0}({1})'.format(root.data, root.depth), end=' ')
 	if root.right is not None:
-		in_order(root.right)
+		print_in_order(root.right)
 
 
-
+def in_order_queue(root):
+	if root.left is not None:
+		in_order_queue(root.left)
+	queue.append(root)
+	if root.right is not None:
+		in_order_queue(root.right)
 
 
 def swapping_nodes(root, k):
-	# stuff here
-	temp = root
+	in_order_queue(root)
+	swap(k)
+
+	print_in_order(root)
+	print()
+
+
+def swap(k):
+	while len(queue) > 0:
+		node = queue.pop(0)
+		if (node.depth % k == 0):
+			node.left, node.right = node.right, node.left
+	
 
 
 """
@@ -114,14 +126,11 @@ for i in range(t):
 
 n = 3
 in_str_1 = ['2 3', '-1 -1', '-1 -1']
-
 root = None
+
 for i in range(n):
 	left, right = (int(temp) for temp in in_str_1[i].split(' '))
 	root = insert(root, i + 1, left, right)
-
-in_order(root)
-print()
 
 t = 2
 in_str_2 = ['1', '1']
@@ -139,14 +148,11 @@ for i in range(t):
 
 n = 5
 in_str_1 = ['2 3', '-1 4', '-1 5', '-1 -1', '-1 -1']
-
 root = None
+
 for i in range(n):
 	left, right = (int(temp) for temp in in_str_1[i].split(' '))
 	root = insert(root, i + 1, left, right)
-
-in_order(root)
-print()
 
 t = 1
 in_str_2 = ['2']
@@ -165,14 +171,11 @@ for i in range(t):
 
 n = 11
 in_str_1 = ['2 3', '4 -1', '5 -1', '6 -1', '7 8', '-1 9', '-1 -1', '10 11', '-1 -1', '-1 -1', '-1 -1']
-
 root = None
+
 for i in range(n):
 	left, right = (int(temp) for temp in in_str_1[i].split(' '))
 	root = insert(root, i + 1, left, right)
-
-in_order(root)
-print()
 
 t = 2
 in_str_2 = ['2', '4']
