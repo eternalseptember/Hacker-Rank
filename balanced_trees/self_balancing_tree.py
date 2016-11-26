@@ -21,6 +21,10 @@ class Node(object):
 
 def insert(root, value):
 	root = insert_node(root, value)
+
+	balanced = [-1, 0, 1]
+	get_balance_factors(root)
+
 	return root
 
 
@@ -42,10 +46,13 @@ def insert_node(root, value):
 	return root
 
 
-def get_balance_factor(node, value):
-	balanceFactor = get_height(node.left) - get_height(node.right)
-	# print(balanceFactor)
-	return balanceFactor
+def get_balance_factors(root):
+	queue.clear()
+	in_order_queue(root)
+	for node in queue:
+		# The Node class in the problem has a "height" property, but
+		# I've decided to use it to store the balance factor instead.
+		node.height = get_height(node.left) - get_height(node.right)
 
 
 def get_height(root):
@@ -58,11 +65,20 @@ def get_height(root):
 	return max(left, right) + 1
 
 
+queue = []
+def in_order_queue(root):
+	if root.left is not None:
+		in_order_queue(root.left)
+	queue.append(root)
+	if root.right is not None:
+		in_order_queue(root.right)
+
+
 def print_in_order(root):
 	if root.left is not None:
 		print_in_order(root.left)
 	# print(root.data, end=' ')
-	print('node: {0}  left: {1}  right: {2}'.format(root.data, root.left, root.right))
+	print('node: {0}  left: {1}  right: {2}  balance: {3}'.format(root.data, root.left, root.right, root.height))
 	if root.right is not None:
 		print_in_order(root.right)
 
