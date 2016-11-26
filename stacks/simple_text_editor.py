@@ -30,22 +30,19 @@ for i in range(q):
 		op = oper
 
 	if op == '1':
-		# append
 		oper_list.append(len(S))
 		S += k
 	elif op == '2':
-		# delete
 		delete = S[-int(k):]
 		oper_list.append(delete)
 		S = S[:-int(k)]
 	elif op == '3':
-		# print
 		print(S[int(k) - 1])
 	else:
 		undo = oper_list.pop()
 		if type(undo) == int:
 			# undo last append operation
-			S = S[:-int(undo)]
+			S = S[:int(undo)]
 		else:
 			# undo last delete operation
 			S += undo
