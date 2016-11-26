@@ -21,10 +21,8 @@ class Node(object):
 
 def insert(root, value):
 	root = insert_node(root, value)
-
-	balanced = [-1, 0, 1]
-	get_balance_factors(root)
-
+	update_height(root)
+	root = balance(root)
 	return root
 
 
@@ -33,26 +31,23 @@ def insert_node(root, value):
 		return Node(value)
 
 	if value < root.data:
-		if root.left is None:
-			root.left = Node(value)
-		else:
-			insert_node(root.left, value)
+		root.left = insert_node(root.left, value)
 	elif root.data < value:
-		if root.right is None:
-			root.right = Node(value)
-		else:
-			insert_node(root.right, value)
+		root.right = insert_node(root.right, value)
 
 	return root
 
 
-def get_balance_factors(root):
+def get_balance_factor(root):
+	return get_height(root.left) - get_height(root.right)
+
+
+def update_height(root):
 	queue.clear()
 	in_order_queue(root)
-	for node in queue:
-		# The Node class in the problem has a "height" property, but
-		# I've decided to use it to store the balance factor instead.
-		node.height = get_height(node.left) - get_height(node.right)
+	while len(queue) > 0:
+		node = queue.pop()
+		node.height = get_height(node)
 
 
 def get_height(root):
@@ -63,6 +58,88 @@ def get_height(root):
 	right = get_height(root.right)
 
 	return max(left, right) + 1
+
+
+def balance(root):
+	if root is None:
+		return root
+
+	# change pointers to new roots here
+	balance_factor = get_balance_factor(root)
+
+	if balance_factor > 1:
+		# balance left subtree
+	elif balance_factor < -1:
+		# balance right subtree
+	else:
+		root.left = balance(root.left)
+		root.right = balance(root.right)
+
+	return root 
+
+
+def rotateLL(root):
+	# unbalanced when a node is inserted into the
+	# left subtree of root's left subtree
+
+	# break root's left connection first
+	old_root = root
+	new_root = old_root.left
+	old_root.left = None
+	# then reassign and update height
+	new_root.right = old_root
+	update_height(new_root)
+
+	return new_root
+
+
+def rotateRR(root):
+	# unbalanced when a node is inserted into the
+	# right subtree of root's right subtree
+
+	# break root's right connection first
+	old_root = root
+	new_root = old_root.right
+	old_root.right = None
+	# then reassign and update height
+	new_root.left = old_root
+	update_height(new_root)
+
+	return new_root
+
+
+def rotateLR(root):
+	# unbalanced when a node is inserted into the
+	# right subtree of the root's left subtree
+
+	# nodeC is root, nodeC's left is nodeA, and nodeA's right is nodeB
+	nodeA = root.left
+	nodeB = nodeA.right
+	# break nodeA's connection to nodeB
+	nodeA.right = None
+	# reassign
+	root.left = nodeB
+	nodeB.left = nodeA
+	new_root = rotateLL(root)
+
+	return new_root
+
+
+def rotateRL(root):
+	# unbalanced when a node is inserted into the
+	# left subtree of the root's right subtree
+
+	# nodeA is root, nodeA's right is nodeC, nodeC's left is nodeB
+	nodeC = root.right
+	nodeB = nodeC.left
+	# break nodeC's connection to nodeB
+	nodeC.left = None
+	# reassign
+	root.right = nodeB
+	nodeB.right = nodeC
+	new_root = rotateRR(root)
+
+	return new_root
 
 
 queue = []
@@ -78,7 +155,7 @@ def print_in_order(root):
 	if root.left is not None:
 		print_in_order(root.left)
 	# print(root.data, end=' ')
-	print('node: {0}  left: {1}  right: {2}  balance: {3}'.format(root.data, root.left, root.right, root.height))
+	print('node: {0}  left: {1}  right: {2}  height: {3}'.format(root.data, root.left, root.right, root.height))
 	if root.right is not None:
 		print_in_order(root.right)
 
