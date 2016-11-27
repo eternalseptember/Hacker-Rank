@@ -17,6 +17,7 @@ from math import log
 def stack_plates(stacked_plates, i):
 	A_i = stacked_plates[:]  # stack for plates that were not divisible
 	B_i = []  # stack for plates that were divisible with i-th prime
+	B_final = []  # already sorted from top-to-bottom, in order
 
 	generate_list_of_primes(i)
 
@@ -32,7 +33,10 @@ def stack_plates(stacked_plates, i):
 			else:
 				A_i.append(plate)
 
-	return B_i[::-1] + A_i[::-1]
+		B_final += B_i[::-1]
+		B_i.clear()
+
+	return B_final + A_i[::-1]
 
 
 def divisible_by_prime(plate_num, i):
