@@ -85,7 +85,7 @@ def balance(root):
 
 		if balance_factor_R == 1:
 			root = rotateRL(root)
-		# elif (balance_factor_R == -1) or (balance_factor_R == 0)
+		# elif (balance_factor_R == -1) or (balance_factor_R == 0):
 		elif (balance_factor_R == -1):
 			root = rotateRR(root)
 		else:
@@ -174,17 +174,26 @@ def in_order_queue(root):
 		in_order_queue(root.right)
 
 
+# Helper print functions to help with debugging
 def print_in_order(root):
 	if root.left is not None:
 		print_in_order(root.left)
-	# print(root.data, end=' ')
-	print('node: {0}  left: {1}  right: {2}  height: {3}'.format(root.data, root.left, root.right, root.height))
+	# print('node: {0}  left: {1}  right: {2}  height: {3}'.format(root.data, root.left, root.right, root.height))
+	print('{0}({1})'.format(root.data, get_balance_factor(root)), end=' ')
 	if root.right is not None:
 		print_in_order(root.right)
 
 
+def print_details(root):
+	if root.left is not None:
+		print_details(root.left)
+	print('node: {0}  left: {1}  right: {2}  height: {3}'.format(root.data, root.left, root.right, root.height))
+	if root.right is not None:
+		print_details(root.right)
 
-# BST setup
+
+"""
+# Test case 0
 node5 = Node(5, None, None, 0)
 node4 = Node(4, None, node5, 1)
 node2 = Node(2, None, None, 0)
@@ -192,4 +201,23 @@ node3 = Node(3, node2, node4, 2)
 
 root = insert(node3, 6)
 print_in_order(root)
-# answer should be 2 3 4 5 6
+print('\n')
+# answer should be...
+# 2(0) 3(-1) 4(0) 5(0) 6(0)
+"""
+
+
+# Test case 1
+root = None
+in_str = [14, 25, 21, 10, 23, 7, 26, 12, 30, 16, 19]
+for i in in_str:
+	print('Inserting {0}:  '.format(i), end=' ')
+	root = insert(root, i)
+	print_in_order(root)
+	print()
+	print_details(root)
+	print('\n')
+
+# answer should be...
+# 7(0) 10(0) 12(0) 14(0) 16(-1) 19(0) 21(0) 23(0) 25(-1) 26(-1) 30(0)
+
