@@ -21,7 +21,7 @@ class Node(object):
 
 def insert(root, value):
 	root = insert_node(root, value)
-	update_height(root)
+	update_heights(root)
 	root = balance(root)
 	return root
 
@@ -42,7 +42,7 @@ def get_balance_factor(root):
 	return get_height(root.left) - get_height(root.right)
 
 
-def update_height(root):
+def update_heights(root):
 	queue.clear()
 	in_order_queue(root)
 	while len(queue) > 0:
@@ -68,14 +68,37 @@ def balance(root):
 	balance_factor = get_balance_factor(root)
 
 	if balance_factor > 1:
-		# balance left subtree
+		balance_factor_L = get_balance_factor(root.left)
+
+		if balance_factor_L == -1:
+			root = rotateLR(root)
+		# elif (balance_factor_L == 1) or (balance_factor_L == 0):
+		elif (balance_factor_L == 1):
+			root = rotateLL(root)
+		else:
+			root.left = balance(root.left)
+
+		root = balance(root)
+
 	elif balance_factor < -1:
-		# balance right subtree
+		balance_factor_R = get_balance_factor(root.right)
+
+		if balance_factor_R == 1:
+			root = rotateRL(root)
+		# elif (balance_factor_R == -1) or (balance_factor_R == 0)
+		elif (balance_factor_R == -1):
+			root = rotateRR(root)
+		else:
+			root.right = balance(root.right)
+
+		root = balance(root)
+
 	else:
 		root.left = balance(root.left)
 		root.right = balance(root.right)
 
-	return root 
+	update_heights(root)
+	return root
 
 
 def rotateLL(root):
@@ -88,7 +111,7 @@ def rotateLL(root):
 	old_root.left = None
 	# then reassign and update height
 	new_root.right = old_root
-	update_height(new_root)
+	update_heights(new_root)
 
 	return new_root
 
@@ -103,7 +126,7 @@ def rotateRR(root):
 	old_root.right = None
 	# then reassign and update height
 	new_root.left = old_root
-	update_height(new_root)
+	update_heights(new_root)
 
 	return new_root
 
