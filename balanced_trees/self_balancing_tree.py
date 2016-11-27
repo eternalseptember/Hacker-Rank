@@ -105,11 +105,9 @@ def rotateLL(root):
 	# unbalanced when a node is inserted into the
 	# left subtree of root's left subtree
 
-	# break root's left connection first
 	old_root = root
 	new_root = old_root.left
-	old_root.left = None
-	# then reassign and update height
+	old_root.left = new_root.right
 	new_root.right = old_root
 	update_heights(new_root)
 
@@ -120,11 +118,9 @@ def rotateRR(root):
 	# unbalanced when a node is inserted into the
 	# right subtree of root's right subtree
 
-	# break root's right connection first
 	old_root = root
 	new_root = old_root.right
-	old_root.right = None
-	# then reassign and update height
+	old_root.right = new_root.left
 	new_root.left = old_root
 	update_heights(new_root)
 
@@ -135,14 +131,12 @@ def rotateLR(root):
 	# unbalanced when a node is inserted into the
 	# right subtree of the root's left subtree
 
-	# nodeC is root, nodeC's left is nodeA, and nodeA's right is nodeB
-	nodeA = root.left
-	nodeB = nodeA.right
-	# break nodeA's connection to nodeB
-	nodeA.right = None
-	# reassign
-	root.left = nodeB
-	nodeB.left = nodeA
+	# root is node1, node1's left is node2, node2's right is node3
+	node2 = root.left
+	node3 = node2.right
+	node2.right = node3.left
+	root.left = node3
+	node3.left = node2
 	new_root = rotateLL(root)
 
 	return new_root
@@ -152,14 +146,12 @@ def rotateRL(root):
 	# unbalanced when a node is inserted into the
 	# left subtree of the root's right subtree
 
-	# nodeA is root, nodeA's right is nodeC, nodeC's left is nodeB
-	nodeC = root.right
-	nodeB = nodeC.left
-	# break nodeC's connection to nodeB
-	nodeC.left = None
-	# reassign
-	root.right = nodeB
-	nodeB.right = nodeC
+	# root is node1, node1's right is node2, node2's left is node3
+	node2 = root.right
+	node3 = node2.left
+	node2.left = node3.right
+	root.right = node3
+	node3.right = node2
 	new_root = rotateRR(root)
 
 	return new_root
@@ -182,14 +174,6 @@ def print_in_order(root):
 	print('{0}({1})'.format(root.data, get_balance_factor(root)), end=' ')
 	if root.right is not None:
 		print_in_order(root.right)
-
-
-def print_details(root):
-	if root.left is not None:
-		print_details(root.left)
-	print('node: {0}  left: {1}  right: {2}  height: {3}'.format(root.data, root.left, root.right, root.height))
-	if root.right is not None:
-		print_details(root.right)
 
 
 """
@@ -215,8 +199,6 @@ for i in in_str:
 	root = insert(root, i)
 	print_in_order(root)
 	print()
-	print_details(root)
-	print('\n')
 
 # answer should be...
 # 7(0) 10(0) 12(0) 14(0) 16(-1) 19(0) 21(0) 23(0) 25(-1) 26(-1) 30(0)
