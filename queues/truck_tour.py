@@ -21,29 +21,9 @@ pump from which we can start the tour.
 """
 
 
-def calc_fuel(possible_start, station_list):
-	for station_num in possible_start:
-		total_fuel = 0
-		
-		# build a circular station list
-		queue = station_list[station_num:] + station_list[:station_num]
-
-		# cycle through queue
-		while ((total_fuel >= 0) and (len(queue) > 0)):
-			station = queue.pop(0)
-			total_fuel += station
-
-		if total_fuel < 0:
-			# continue to next possible starting station
-			continue
-		else:
-			return station_num
-
-
-
 # n = int(input().strip())
-station_list = []    # stores difference of (amt - dist)
-possible_start = []  # index of station_list
+total_fuel = 0
+init_station = None
 
 # setting up test case 1
 n = 3
@@ -53,14 +33,17 @@ in_str1 = ['1 5', '10 3', '3 4']
 for i in range(n):
 	# amt, dist = (int(temp) for temp in input().strip().split(' '))
 	amt, dist = (int(temp) for temp in in_str1[i].strip().split(' '))
+	
 	diff = amt - dist
+	total_fuel += diff
 
-	station_list.append(diff)
+	if init_station is None:
+		init_station = i
 
-	if diff >= 0:
-		possible_start.append(i)
+	if total_fuel < 0:
+		init_station = None
+		total_fuel = 0
 
 
-station = calc_fuel(possible_start, station_list)
-print(station)
+print(init_station)
 # expected result: 1
