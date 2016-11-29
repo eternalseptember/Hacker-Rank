@@ -1,0 +1,1 @@
+Miscellanous files related to the intro tutorial '30 days of code' (the most likely source for duplicate problems), randomly solved problems (possibly from tutorial or random exploration of another problem domain), and setting up Hacker Rank submissions.
