@@ -16,6 +16,12 @@ result is a real number, DO NOT output trailing 0s.)
 """
 
 
+import heaqp
+
+
+
+
+
 def median(op, x):
 	"""
 	if op == 'a':
