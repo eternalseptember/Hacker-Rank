@@ -13,8 +13,24 @@ D = (insertion sort shifts) - (quicksort swaps)
 
 
 def insertion_sort_shifts(arr):
-	# return shifts
-	return len(arr)
+	shifts = 0
+	length = len(arr)
+
+	# The first element is already "sorted".
+	# i is the unsorted element being compared.
+	for i in range(1, length):
+		# Iterate backwards through "sorted" elements.
+		# j = i - 1 is the index for first sorted item.
+		for j in range(i - 1, -1, -1):
+			# Use j as index base because of the shift.
+			# "j = i - 1" means "i = j + 1".
+			if arr[j + 1] < arr[j]:
+				arr[j + 1], arr[j] = arr[j], arr[j + 1]
+				shifts += 1
+			else:
+				break
+
+	return shifts
 
 
 def quick_sort_swaps(arr, beg_index=0, pivot_index=None):
@@ -66,15 +82,14 @@ def quick_sort_swaps(arr, beg_index=0, pivot_index=None):
 
 n = 7
 in_str1 = '1 3 9 8 2 7 5'
-arr = [int(temp) for temp in in_str1.strip().split(' ')]
+arr1 = [int(temp) for temp in in_str1.strip().split(' ')]
 
 # n = int(input().strip())
-# arr = [int(temp) for temp in input().strip().split(' ')]
+# arr1 = [int(temp) for temp in input().strip().split(' ')]
+arr2 = arr1[:]
 
-# D = insertion_sort_shifts(arr) - quick_sort_swaps(arr)
-# print(D)
+D = insertion_sort_shifts(arr1) - quick_sort_swaps(arr2)
+print(D)
 
-swap = quick_sort_swaps(arr)
-print(arr)
-print(swap)
+
 
