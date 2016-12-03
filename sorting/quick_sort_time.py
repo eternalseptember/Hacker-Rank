@@ -60,9 +60,11 @@ def quick_sort_swaps(arr, beg_index=0, pivot_index=None):
 				large_part_index += 1
 
 	# 2. Then swap the pivot with the first item of the larger partition.
+	# Test cases require the final swap to count,
+	# regardless if it was already in the correct position, as in 2a.
+	swap += 1
 	if large_part_index is not None:
 		arr[pivot_index], arr[large_part_index] = arr[large_part_index], arr[pivot_index]
-		swap += 1
 
 	# 2a. Unless the pivot was the largest item.
 	# So partition again with the pivot point moved to the left once.
@@ -80,16 +82,31 @@ def quick_sort_swaps(arr, beg_index=0, pivot_index=None):
 
 
 
-n = 7
-in_str1 = '1 3 9 8 2 7 5'
-arr1 = [int(temp) for temp in in_str1.strip().split(' ')]
+"""
+# Submission
 
-# n = int(input().strip())
-# arr1 = [int(temp) for temp in input().strip().split(' ')]
+n = int(input().strip())
+arr1 = [int(temp) for temp in input().strip().split(' ')]
 arr2 = arr1[:]
 
 D = insertion_sort_shifts(arr1) - quick_sort_swaps(arr2)
 print(D)
+"""
 
+
+
+# Test cases
+# TC 1: D = 1
+# TC 2: D = 16
+n = [7, 10]
+in_str = ['1 3 9 8 2 7 5', '10 9 8 7 6 5 4 3 2 1']
+
+for line in in_str:
+	arr1 = [int(temp) for temp in line.strip().split(' ')]
+	arr2 = arr1[:]
+
+	shifts = insertion_sort_shifts(arr1)
+	swaps = quick_sort_swaps(arr2)
+	print('Shifts: {0:2}  Swaps: {1:2}  D: {2:2}'.format(shifts, swaps, shifts - swaps))
 
 
