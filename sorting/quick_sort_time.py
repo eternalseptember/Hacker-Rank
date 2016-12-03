@@ -17,9 +17,50 @@ def insertion_sort_shifts(arr):
 	return len(arr)
 
 
-def quick_sort_swaps(arr):
-	# return swaps
-	return len(arr)
+def quick_sort_swaps(arr, beg_index=0, pivot_index=None):
+	# pivot_index should only be None for first invocation.
+	# Recursive calls will supply pivot_index.
+	if pivot_index is None:
+		pivot_index = len(arr) - 1
+
+	size = len(arr[beg_index:pivot_index + 1])
+
+	if size <= 1:
+		return 0
+
+	pivot = arr[pivot_index]
+	large_part_index = None
+	swap = 0
+
+	# 1. Sort and swap the body.
+	for i in range(beg_index, pivot_index):
+		if arr[i] > pivot:
+			if large_part_index is None:
+				large_part_index = i
+		else:
+			swap += 1
+			if large_part_index is not None:
+				arr[i], arr[large_part_index] = arr[large_part_index], arr[i]
+				large_part_index += 1
+
+	# 2. Then swap the pivot with the first item of the larger partition.
+	if large_part_index is not None:
+		arr[pivot_index], arr[large_part_index] = arr[large_part_index], arr[pivot_index]
+		swap += 1
+
+	# 2a. Unless the pivot was the largest item.
+	# So partition again with the pivot point moved to the left once.
+	else:
+		sub_swap = quick_sort_swaps(arr, beg_index, pivot_index - 1)
+		swap += sub_swap
+
+	# 3. Now partition the larger and smaller halves.
+	if large_part_index is not None:
+		left_swap = quick_sort_swaps(arr, beg_index, large_part_index - 1)
+		right_swap = quick_sort_swaps(arr, large_part_index + 1, pivot_index)
+		swap += left_swap + right_swap
+
+	return swap
 
 
 
@@ -30,6 +71,10 @@ arr = [int(temp) for temp in in_str1.strip().split(' ')]
 # n = int(input().strip())
 # arr = [int(temp) for temp in input().strip().split(' ')]
 
-D = insertion_sort_shifts(arr) - quick_sort_swaps(arr)
-print(D)
+# D = insertion_sort_shifts(arr) - quick_sort_swaps(arr)
+# print(D)
+
+swap = quick_sort_swaps(arr)
+print(arr)
+print(swap)
 
