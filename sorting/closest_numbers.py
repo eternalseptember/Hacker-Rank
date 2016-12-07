@@ -22,9 +22,30 @@ sample case #3 for explanation).
 
 
 def smallest_difference(arr):
-	# return pairs
-	print(arr)
+	pairs = []
+	s_diff = None
 
+	size = len(arr)
+	for i in range(0, size-1):
+		for j in range(i+1, size):
+			diff = arr[i] - arr[j]
+			diff = abs(diff)
+			if s_diff is None:
+				s_diff = diff
+				pairs.append(arr[i])
+				pairs.append(arr[j])
+			else:
+				if diff < s_diff:
+					s_diff = diff
+					pairs.clear()
+					pairs.append(arr[i])
+					pairs.append(arr[j])
+				elif diff == s_diff:
+					pairs.append(arr[i])
+					pairs.append(arr[j])
+
+	pairs.sort()
+	print(*pairs, sep=' ')
 
 
 
@@ -37,9 +58,11 @@ def smallest_difference(arr):
 # Test case 2: -520 -470 -20 30
 # Test case 3: 2 3 3 4 4 5
 N = 10, 12, 4
+
 in_str1 = ['-20 -3916237 -357920 -3620601 7374819 -7330761 30 6246457 -6461594 266854',
 '-20 -3916237 -357920 -3620601 7374819 -7330761 30 6246457 -6461594 266854 -520 -470 ',
 '5 4 3 2']
+
 
 for str in in_str1:
 	A = [int(temp) for temp in str.strip().split(' ')]
