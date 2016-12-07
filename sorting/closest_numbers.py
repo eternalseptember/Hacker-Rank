@@ -25,24 +25,23 @@ def smallest_difference(arr):
 	pairs = []
 	s_diff = None
 
+	arr.sort()
 	size = len(arr)
-	for i in range(0, size-1):
-		for j in range(i+1, size):
-			diff = arr[i] - arr[j]
-			diff = abs(diff)
-			if s_diff is None:
-				s_diff = diff
-				pairs.append(arr[i])
-				pairs.append(arr[j])
-			else:
-				if diff < s_diff:
-					s_diff = diff
-					pairs.clear()
-					pairs.append(arr[i])
-					pairs.append(arr[j])
-				elif diff == s_diff:
-					pairs.append(arr[i])
-					pairs.append(arr[j])
+
+	for i in range(size-1):
+		diff = abs(arr[i] - arr[i+1])
+
+		if s_diff is None:
+			s_diff = diff
+			pairs.extend([arr[i], arr[i+1]])
+		elif diff < s_diff:
+			s_diff = diff
+			pairs.clear()
+			pairs.extend([arr[i], arr[i+1]])
+		elif diff == s_diff:
+			pairs.extend([arr[i], arr[i+1]])
+
+
 
 	pairs.sort()
 	print(*pairs, sep=' ')
