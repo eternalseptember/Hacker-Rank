@@ -15,17 +15,6 @@ Input Format:
 
 Output Format:
 Print the strings in their correct order.
-
-"""
-
-
-
-"""
-n = int(input().strip())
-arr = []
-for i in range(n):
-	x, s = input().strip().split(' ')
-
 """
 
 
@@ -34,6 +23,31 @@ for i in range(n):
 
 n = 20
 in_str1 = ['0 ab', '6 cd', '0 ef', '6 gh', '4 ij', '0 ab', '6 cd', '0 ef', '6 gh', '0 ij', '4 that', '3 be', '0 to', '1 be', '5 question', '1 or', '2 not', '4 is', '2 to', '4 the']
+
+
+# n = int(input().strip())
+arr = [[] for i in range(100)]
+half = n//2
+count = 1
+for i in range(n):
+	x, s = in_str1[i].strip().split(' ')
+	# x, s = input().strip().split(' ')
+	x = int(x)
+
+	if count <= half:
+		arr[x].append('-')
+	else:
+		arr[x].append(s)
+
+	count += 1
+
+s = ''
+for i in arr:
+	if len(i) != 0:
+		s += ' '.join(str(x) for x in i)
+		s += ' '
+
+print(s)
 
 
 
