@@ -12,7 +12,9 @@ Output one integer, the median.
 
 
 def find_median(arr):
-	return arr[0]
+	arr.sort()
+	med = len(arr)//2
+	return arr[med]
 
 
 # n = int(input().strip())
