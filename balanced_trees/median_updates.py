@@ -58,7 +58,10 @@ def median_update(op, x):
 				heapq.heappush(min_heap, x)
 
 		rebalance_heaps()
-		calc_median()
+		# testing...
+		# calc_median()
+		median = calc_median()
+		return median
 
 	else:
 		# print('remove: {0}'.format(x))
@@ -85,12 +88,19 @@ def median_update(op, x):
 		max_size = len(max_heap)
 		min_size = len(min_heap)
 		if found is False:
-			print('Wrong!')
+			# testing...
+			# print('Wrong!')
+			return 'Wrong!'
 		elif (max_size == 0) and (min_size == 0):
-			print('Wrong!')
+			# testing...
+			# print('Wrong!')
+			return 'Wrong!'
 		else:
 			rebalance_heaps()
-			calc_median()
+			# testing...
+			# calc_median()
+			median = calc_median()
+			return median
 
 
 def rebalance_heaps():
@@ -120,7 +130,9 @@ def calc_median():
 		else:
 			median = max_heap[0]
 
-	print_median(median)
+	# disabling for testing
+	# print_median(median)
+	return median
 
 
 def print_median(i):
@@ -129,7 +141,7 @@ def print_median(i):
 	else:
 		print('%.1f' % i)
 
-
+"""
 # N = int(input().strip())
 
 N = 7
@@ -141,6 +153,40 @@ for i in range(N):
 	median_update(op, int(x))
 
 # should be: Wrong!, 1, 1.5, 1, 1.5, 1, Wrong!
+"""
 
 
+# Set up for executing test cases.
+test_case_results = open('results.txt', 'w')
+test_case_inputs = open('test_cases/med_upda-in_04.txt', 'r')
+test_case_expected = open('test_cases/med_upda-out_04.txt', 'r')
+
+N_in = test_case_inputs.readline()
+N = int(N_in.strip())
+
+for i in range(N):
+	inp = test_case_inputs.readline()
+	op, x = inp.strip().split(' ')
+	result = median_update(op, int(x))
+
+
+	# setting up writing to file
+	expected_result = test_case_expected.readline()
+	test_case_results.write('EXPECTED: {0}  ACTUAL: '.format(expected_result))
+
+	# from the disabled print_median function
+	if (type(result) == int) or (int(result) == result):
+		test_case_results.write('{0}\n'.format(int(result)))
+	elif (type(result) == float):
+		test_case_results.write('{0:.1f}\n'.format(result))
+	else:
+		test_case_results.write('{0}\n'.format(result))
+
+
+
+
+
+test_case_results.close()
+test_case_inputs.close()
+test_case_expected.close()
 
