@@ -182,10 +182,6 @@ for i in range(N):
 	else:
 		test_case_results.write('{0}\n'.format(result))
 
-
-
-
-
 test_case_results.close()
 test_case_inputs.close()
 test_case_expected.close()
