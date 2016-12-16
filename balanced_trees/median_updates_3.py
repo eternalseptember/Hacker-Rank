@@ -12,22 +12,33 @@ count = 0
 def median_update(op, x):
 	global count
 	if op == 'a':
-		# print('add: {0}'.format(x))
 		bisect.insort(num_list, x)
 		count += 1
 		return calc_median()
 	else:
-		# print('remove: {0}'.format(x))
-		try:
-			num_list.remove(x)
-			count -= 1
-		except ValueError:
-			return None
-
-		if count <= 0:
+		ind = search_index(num_list, x)
+		if (ind == -1):
 			return None
 		else:
-			return calc_median()
+			del num_list[ind]
+			count -= 1
+
+			if count <= 0:
+				return None
+			else:
+				return calc_median()
+
+
+def search_index(num_list, val):
+	pos = bisect.bisect_left(num_list, val)
+	# The index of a list item is the insertion point.
+	# If the pos == count, then the insertion point is at the end of the list,
+	# which means the item is not in the list.
+	# If the pos == 0, then the insertion point is at the beginning of the list.
+	if (pos != count) and (num_list[pos] == val):
+		return pos
+	else:
+		return -1
 
 
 def calc_median():
