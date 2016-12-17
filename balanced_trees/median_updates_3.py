@@ -42,8 +42,6 @@ def search_index(num_list, val):
 
 
 def calc_median():
-	global count
-
 	if (count % 2 == 0):
 		right = count // 2
 		left = right - 1
