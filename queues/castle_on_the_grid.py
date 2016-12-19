@@ -21,6 +21,7 @@ required to move the castle to the goal position.
 """
 
 
+# def find_steps(N, grid, a, b, c, d, error_file):
 def find_steps(N, grid, a, b, c, d):
 	# setting up the solutions map
 	path = [[0 for col in range(N)] for row in range(N)]
