@@ -27,15 +27,70 @@ def find_steps(N, grid, a, b, c, d):
 	path[a][b] = 1
 	path[c][d] = '*'
 
-	find_path(N, grid, a, b, path)
+	steps_to_goal = find_a_path(N, grid, path, a, b)
+	steps = calc_min_steps(N, grid, path, steps_to_goal, c, d)
+	return steps
 
-	return 0
+
+def calc_min_steps(size, grid, path, steps_to_goal, c, d):
+	queue = []
+	queue.append((c, d))
+
+	# steps in the same direction count as "one" move
+	consec_type = None
+	# increment min steps when conseq_type switches
+	min_steps = 1
+
+	# first pass attempt
+	found = False
+	while found is False:
+		point = queue.pop()
+		row, col = (point)
+
+		four_dirs = [(row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1)]
+		for direction in four_dirs:
+			new_point = (direction)
+			new_row, new_col = (new_point)
+
+			if not in_bound(size, path, new_point):
+				continue
+			# if it's the next number down
+			if path[new_row][new_col] == (path[row][col] - 1):
+				queue.append((new_row, new_col))
+
+				seg_seq_type = what_conseq_type(point, new_point)
+				if consec_type is None:
+					consec_type = seg_seq_type
+				elif seg_seq_type != consec_type:
+					consec_type = seg_seq_type
+					min_steps += 1
+
+				# should find a way to store multiple paths, but for first pass
+				if path[new_row][new_col] == 1:
+					found = True
+					break
+
+	return min_steps
 
 
-def find_path(size, maze, a, b, path):
+
+def what_conseq_type(point1, point2):
+	row1, col1 = (point1)
+	row2, col2 = (point2)
+
+	if row1 == row2:
+		return 'row'
+	elif col1 == col2:
+		return 'col'
+	else:
+		return None
+
+
+def find_a_path(size, maze, path, a, b):
 	queue = []
 	queue.append((a, b))
 	found = False
+	step_found = 0
 
 	while found is False:
 		point = queue.pop()
@@ -53,14 +108,19 @@ def find_path(size, maze, a, b, path):
 			if maze[new_row][new_col] == 'X':
 				path[new_row][new_col] = -1
 
+			# if the path hasn't been visited yet
+			# may need to modify this
 			if path[new_row][new_col] == 0:
 				path[new_row][new_col] = step + 1
 				queue.append((new_row, new_col))
 			elif path[new_row][new_col] == '*':
+				path[new_row][new_col] = step + 1
+				step_found = step + 1
 				found = True
 
-	for line in path:
-		print(line)
+	#for line in path:
+	#	print(line)
+	return step_found
 
 
 def in_bound(size, maze, point):
