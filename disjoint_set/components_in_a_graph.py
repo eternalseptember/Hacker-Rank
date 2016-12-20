@@ -13,7 +13,46 @@ smallest and the largest components.
 
 
 def get_vertices(edges_list):
-	connected = []
+	smallest = 30000  # given in the constraints
+	largest = 0
+
+	list_of_sets = union_join(edges_list)
+
+	for list in list_of_sets:
+		size = len(list)
+		if size > largest:
+			largest = size
+		if size < smallest:
+			smallest = size
+
+	return smallest, largest
+
+
+def union_join(edges_list):
+	list_of_sets = []
+
+	for edge in edges_list:
+		# create the first set
+		if len(list_of_sets) == 0:
+			first_set = set(edge)
+			list_of_sets.append(first_set)
+		else:
+			# see if this edge can be added to any already-created set
+			added = False
+			for list in list_of_sets:
+				if not list.isdisjoint(edge):
+					list.update(edge)
+					added = True
+					break
+			# if not, create a new set
+			if added is False:
+				new_set = set(edge)
+				list_of_sets.append(new_set)
+
+	if len(list_of_sets) == len(edges_list):
+		return list_of_sets
+	else:
+		return union_join(list_of_sets)
 
 
 
