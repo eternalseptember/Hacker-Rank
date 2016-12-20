@@ -3,7 +3,7 @@ from __ import *
 # Set up for executing test cases.
 test_cases = [0, 3, 5, 6]
 
-# Isolated the ONE test case that I was failing across multiple test cases
+# Personal test cases start in the 100s
 # test_cases = [1000]
 
 for num in test_cases:
@@ -55,9 +55,14 @@ for num in test_cases:
 
 		# modified this a bit to pass in a file stream for writing
 		# count = function_name(N, M, matrix, test_case_results)
+		act = count
 
 		# get the expected result
 		exp = test_case_expected.readline().strip()
+
+		# do some type conversion first:
+		if type(act) == int:
+			exp = int(exp)
 
 		# write the result to file
 		test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp, act))

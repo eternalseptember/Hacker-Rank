@@ -1,7 +1,10 @@
 from castle_on_the_grid import *
 
 # Set up for executing test cases.
-test_cases = [3]
+test_cases = [3, 100, 101]
+
+# Testing something simple
+#test_cases = [100, 101]
 
 
 for num in test_cases:
@@ -35,11 +38,12 @@ for num in test_cases:
 
 	# do something with N
 	grid = []
-	# varies per problem
+	# varies per problemprint('Should be the beginning')
 	for i in range(N):
 		inp = test_case_inputs.readline().strip()
 		row = list(inp)
 		grid.append(row)
+
 
 	inp = test_case_inputs.readline().strip()
 	a, b, c, d = (int(temp) for temp in inp.split(' '))
@@ -47,28 +51,24 @@ for num in test_cases:
 	# get the actual result
 	# results of most problems from HR is returned from a function
 	steps = find_steps(N, grid, a, b, c, d)
-	act = steps
 
 	# modified this a bit to pass in a file stream for writing
 	# steps = find_steps(N, grid, a, b, c, d, test_case_results)
 
 	# get the expected result
+	act = steps
 	exp = test_case_expected.readline().strip()
 
-	# write the result to file
-	test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp, act))
+	# do some type conversion first:
+	if type(act) == int:
+		exp = int(exp)
 
-	"""
+	# write the result to file
+	# test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp, act))
+
 	# write the failed results to file
 	if exp != act:
-
-		# example on how to print a matrix to file
-		matr_str = ''
-		for row in matrix:
-			matr_str += ''.join(str(x) for x in row)
-			matr_str += '\n'
-		test_case_results.write(matr_str)
-	"""
+		test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp, act))
 
 	# close the file streams
 	test_case_results.close()

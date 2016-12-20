@@ -21,7 +21,7 @@ required to move the castle to the goal position.
 """
 
 
-# def find_steps(N, grid, a, b, c, d, error_file):
+#def find_steps(N, grid, a, b, c, d, error_file):
 def find_steps(N, grid, a, b, c, d):
 	# setting up the solutions map
 	path = [[0 for col in range(N)] for row in range(N)]
@@ -29,8 +29,15 @@ def find_steps(N, grid, a, b, c, d):
 	path[c][d] = '*'
 
 	steps_to_goal = find_a_path(N, grid, path, a, b)
-	steps = calc_min_steps(N, grid, path, steps_to_goal, c, d)
-	return steps
+
+	"""
+	# print to error file
+	for line in path:
+		error_file.write('{0}\n'.format(line))
+	"""
+
+	# steps = calc_min_steps(N, grid, path, steps_to_goal, c, d)
+	return steps_to_goal
 
 
 def calc_min_steps(size, grid, path, steps_to_goal, c, d):
@@ -74,7 +81,6 @@ def calc_min_steps(size, grid, path, steps_to_goal, c, d):
 	return min_steps
 
 
-
 def what_conseq_type(point1, point2):
 	row1, col1 = (point1)
 	row2, col2 = (point2)
@@ -91,37 +97,76 @@ def find_a_path(size, maze, path, a, b):
 	queue = []
 	queue.append((a, b))
 	found = False
-	step_found = 0
 
 	while found is False:
-		point = queue.pop()
+		point = queue.pop(0)
 		row, col = (point)
-		step = path[row][col]
+		if point == (a, b):
+			step = 1
+		else:
+			step = path[row][col] + 1
 
 		# north, east, south, west
 		four_dirs = [(row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1)]
 
-		for direction in four_dirs:
+		# then fill them
+		for dir_num in range(len(four_dirs)):
+			direction = four_dirs[dir_num]
 			new_row, new_col = (direction)
 
 			if not in_bound(size, maze, direction):
 				continue
 			if maze[new_row][new_col] == 'X':
 				path[new_row][new_col] = -1
+				continue
 
-			# if the path hasn't been visited yet
-			# may need to modify this
-			if path[new_row][new_col] == 0:
-				path[new_row][new_col] = step + 1
-				queue.append((new_row, new_col))
-			elif path[new_row][new_col] == '*':
-				path[new_row][new_col] = step + 1
-				step_found = step + 1
+			if path[new_row][new_col] == '*':
+				path[new_row][new_col] = step
 				found = True
 
-	#for line in path:
-	#	print(line)
-	return step_found
+			# if the tile hasn't been visited yet
+			elif (path[new_row][new_col] == 0):
+				# flood fill
+				obstacle = False
+				flood_row = new_row
+				flood_col = new_col
+				while obstacle is False:
+					if not in_bound(size, maze, (flood_row, flood_col)):
+						obstacle = True
+					elif maze[flood_row][flood_col] == 'X':
+						path[flood_row][flood_col] = -1
+						obstacle = True
+					elif path[flood_row][flood_col] == '*':
+						path[flood_row][flood_col] = step
+						found = True
+						obstacle = True
+					elif (path[flood_row][flood_col] == 0):
+						path[flood_row][flood_col] = step
+
+						if (flood_row, flood_col) not in queue:
+							queue.append((flood_row, flood_col))
+
+						# update flood_row or flood_col
+						if dir_num == 0:  # north
+							flood_row -= 1
+						elif dir_num == 1:  # east
+							flood_col += 1
+						elif dir_num == 2:  # south
+							flood_row += 1
+						elif dir_num == 3:  # west
+							flood_col -= 1
+					else:
+						# By this point, the content of the cell is smaller than the step
+						obstacle = True
+
+			if found is True:
+				break
+
+	for line in path:
+		print(line)
+	return step
+
+
 
 
 def in_bound(size, maze, point):
@@ -148,7 +193,7 @@ steps = find_steps(N, grid, a, b, c, d)
 print(steps)
 """
 
-
+"""
 # Setting up test case 1
 # Expected answer: 3
 N = 3  # size of the grid
@@ -164,5 +209,6 @@ a, b, c, d = (int(temp) for temp in in_str2.strip().split(' '))
 
 steps = find_steps(N, grid, a, b, c, d)
 print(steps)
+"""
 
 
