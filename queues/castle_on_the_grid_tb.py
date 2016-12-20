@@ -1,4 +1,4 @@
-from castle_on_the_grid import *
+from castle_on_the_grid_clean import *
 
 # Set up for executing test cases.
 test_cases = [3, 100, 101]
