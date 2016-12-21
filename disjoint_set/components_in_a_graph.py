@@ -37,22 +37,39 @@ def union_join(edges_list):
 			first_set = set(edge)
 			list_of_sets.append(first_set)
 		else:
-			# see if this edge can be added to any already-created set
-			added = False
+			# look for sets to update or merge
+			sets_found = 0
+			first_index = None
+			second_index = None
+
 			for list in list_of_sets:
 				if not list.isdisjoint(edge):
-					list.update(edge)
-					added = True
-					break
+					if sets_found == 0:
+						first_index = list_of_sets.index(list)
+						sets_found += 1
+					elif sets_found == 1:
+						second_index = list_of_sets.index(list)
+						sets_found += 1
+						break
+
+			# see if this edge can be added to any already-created set
+			added = False
+
+			if sets_found == 1:
+				list_of_sets[first_index].update(edge)
+				added = True
+			elif sets_found == 2:
+				list_of_sets[first_index].update(list_of_sets[second_index])
+				del list_of_sets[second_index]
+				added = True
+
 			# if not, create a new set
 			if added is False:
 				new_set = set(edge)
 				list_of_sets.append(new_set)
 
-	if len(list_of_sets) == len(edges_list):
-		return list_of_sets
-	else:
-		return union_join(list_of_sets)
+	return list_of_sets
+
 
 
 
