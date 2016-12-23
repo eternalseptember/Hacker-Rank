@@ -20,12 +20,31 @@ class Disjoint_Set:
 		self.sets = []
 
 
+	def get_results(self):
+		# Get the final printed results from this function
+		counts = self.get_counts()
+
+		# Smallest set
+		small_list = counts.most_common()[::-1]
+		for item in small_list:
+			small_par, count = (item)
+			if count == 1:
+				continue
+			else:
+				break
+		
+		# Largest set
+		lar_par, large = (counts.most_common(1)[0])
+
+		return str(count) + ' ' + str(large)
+
+
 	def get_counts(self):
-		# the final count might not be fully right due to path compression
+		# The final count might not be fully right due to path compression.
 		for i in range(len(self.sets)):
 			self.find_parent(i)
 
-		# tally
+		# Tally
 		freq = []
 		for item in self.sets:
 			freq.append(item.parent)
@@ -34,6 +53,7 @@ class Disjoint_Set:
 
 
 	def nodes_in_set(self):
+		# A helper function for troubleshooting only
 		items = ''
 		for i in range(len(self.sets)):
 			items += 'Node ' + str(i+1) + ': Parent: ' + str(self.sets[i].parent) + ' Rank: ' + str(self.sets[i].rank) + '\n'
@@ -58,18 +78,18 @@ class Disjoint_Set:
 		item1 = self.sets[num1-1]
 		item2 = self.sets[num2-1]
 
-		print('Pre union: what is in these specific locations?')
-		print('Parent: {0}  Rank: {1}'.format(item1, item1.rank))
-		print('Parent: {0}  Rank: {1}'.format(item2, item2.rank))
+		#print('Pre union: what is in these specific locations?')
+		#print('Parent: {0}  Rank: {1}'.format(item1, item1.rank))
+		#print('Parent: {0}  Rank: {1}'.format(item2, item2.rank))
 
 		item1_parent = self.find_parent(item1.parent)
 		item2_parent = self.find_parent(item2.parent)
 		item1_parent_rank = self.sets[item1_parent-1].rank
 		item2_parent_rank = self.sets[item2_parent-1].rank
 
-		print('What are each item\'s roots?')
-		print('Parent: {0}  Rank: {1}'.format(item1_parent, item1_parent_rank))
-		print('Parent: {0}  Rank: {1}'.format(item2_parent, item2_parent_rank))
+		#print('What are each item\'s roots?')
+		#print('Parent: {0}  Rank: {1}'.format(item1_parent, item1_parent_rank))
+		#print('Parent: {0}  Rank: {1}'.format(item2_parent, item2_parent_rank))
 
 		if item1_parent_rank == item2_parent_rank:
 			# Set item1 to be the representative
@@ -83,16 +103,14 @@ class Disjoint_Set:
 			# Set item2 to be the representative
 			self.sets[item1_parent-1].parent = self.sets[item2_parent-1].parent
 
-		print()
+		#print()
 
 	def find_parent(self, num):
 		# Array is 0-based, but N begins at 1
 		if self.sets[num-1].parent == num:
-			#print('Parent and number match')
 			return num
 		else:
 			# Path compression here
-			#print('Parent and numbers don\'t match.')
 			parent = self.find_parent(self.sets[num-1].parent)
 			self.sets[num-1].parent = parent
 			return parent
@@ -116,4 +134,6 @@ for i in range(N):
 
 
 # print(set1.nodes_in_set())
-print(set1.get_counts())
+# print(set1.get_counts())
+print(set1.get_results())
+
