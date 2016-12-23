@@ -16,8 +16,29 @@ Then next N lines follow, where i_th line contains i_th string.
 
 
 def check_prefixes(list_of_strings):
-	# return None for good set
-	# return first string for which condition fails
+	bad_string = None
+	safe_strings = []
+
+	for new_string in list_of_strings:
+		if len(safe_strings) == 0:
+			# print('First string: {0}'.format(new_string))
+			safe_strings.append(new_string)
+		else:
+			for prefix in safe_strings:
+				# print('Checking: {0}  against: {1}'.format(new_string, prefix))
+				# remember to check in both directions
+				if new_string.startswith(prefix):
+					# print('\tNew string: {0}  starts with: {1}'.format(new_string, prefix))
+					return new_string
+				if prefix.startswith(new_string):
+					# print('\tPrefix: {0}  starts with: {1}'.format(prefix, new_string))
+					return new_string
+
+			# by this point, new string is a safe string
+			safe_strings.append(new_string)
+			# print('\tSafe_strings: {0}'.format(safe_strings))
+
+	# by this point, this is a good set
 	return None
 
 
@@ -41,9 +62,12 @@ else:
 
 # Test case 1 expected result: BAD SET; aabcde
 # Test case 2 expected result: BAD SET; aacghgh
-N = [7, 4]
+N = [7, 4, 7, 7]
 in_str1 = [['aab', 'defgab', 'abcde', 'aabcde', 'cedaaa', 'bbbbbbbbbb', 'jabjjjad'],
-		   ['aab', 'aac', 'aacghgh', 'aabghgh']]
+		   ['aab', 'aac', 'aacghgh', 'aabghgh'],
+		   ['aab', 'defgab', 'abc', 'abcde', 'cedaaa', 'bbbbbbbbbb', 'jabjjjad'],
+		   ['aab', 'defgab', 'abcde', 'abc', 'cedaaa', 'bbbbbbbbbb', 'jabjjjad']]
+
 
 for i in range(len(N)):
 	strings = []
@@ -59,5 +83,5 @@ for i in range(len(N)):
 	else:
 		print('BAD SET')
 		print(failed_string)
-
+	print()
 
