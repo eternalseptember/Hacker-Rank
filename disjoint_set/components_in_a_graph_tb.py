@@ -1,7 +1,7 @@
-from disjoint_set import *
+from components_in_a_graph_2 import *
 
 # Set up for executing test cases.
-test_cases = [0, 19]
+test_cases = [0, 19, 24, 31]
 
 # Personal test cases start in the 100s
 # test_cases = [1000]
@@ -41,18 +41,19 @@ for num in test_cases:
 
 	# Do something T times.
 	for i in range(T):
-		G, B = (int(temp) for temp in in_str1[i].strip().split())
+		inp = test_case_inputs.readline().strip()
+		G, B = (int(temp) for temp in inp.strip().split())
 		set1.union(G, B)
 
 
 	# After looping with T:
 	# Get the actual result.
 	# Results of most problems from HR is returned from a function.
-	count = function_Name(N, M, matrix)
+	result = set1.get_results()
 
 	# Modified this a bit to pass in a file stream for writing.
 	# count = function_name(N, M, matrix, test_case_results)
-	act = count
+	act = result
 
 	# Get the expected result.
 	exp = test_case_expected.readline().strip()
@@ -62,19 +63,12 @@ for num in test_cases:
 		exp = int(exp)
 
 	# Write the results to file.
-	test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp, act))
+	# test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp, act))
 
-	"""
+	
 	# Write the failed results to file.
 	if exp != act:
-
-		# example on how to print a matrix to file
-		matr_str = ''
-		for row in matrix:
-			matr_str += ''.join(str(x) for x in row)
-			matr_str += '\n'
-		test_case_results.write(matr_str)
-	"""
+		test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp, act))
 
 	# Close the file streams.
 	test_case_results.close()
