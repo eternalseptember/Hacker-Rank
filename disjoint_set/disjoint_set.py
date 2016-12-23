@@ -3,75 +3,117 @@ An attempt to implement a disjoint set to be used for problems in this section.
 """
 
 
-class Element:
-	def __init__(self, data=None, parent=None):
-		self.data = data
+from collections import Counter
 
-		if parent is None:
-			self.parent = self
-		else:
-			self.parent = parent
+
+class Element:
+	def __init__(self, parent=None):
+		self.parent = parent
+		self.rank = 0
 
 	def __str__(self):
-		return str(self.data)
+		return str(self.parent)
 
 
 class Disjoint_Set:
 	def __init__(self):
-		self.set = set()
-		self.rep = None
-		self.rank = 0
+		self.sets = []
 
 
-	def __str__(self):
-		s = ''
-		for item in self.set:
-			s += str(item) + ' '
-		return s
+	def get_counts(self):
+		# the final count might not be fully right due to path compression
+		for i in range(len(self.sets)):
+			self.find_parent(i)
+
+		# tally
+		freq = []
+		for item in self.sets:
+			freq.append(item.parent)
+		counts = Counter(freq)
+		return counts
 
 
-	def __len__(self):
-		return len(self.set)
+	def nodes_in_set(self):
+		items = ''
+		for i in range(len(self.sets)):
+			items += 'Node ' + str(i+1) + ': Parent: ' + str(self.sets[i].parent) + ' Rank: ' + str(self.sets[i].rank) + '\n'
+		return items
 
 
-	def make_connected_pair(self, elem1, elem2):
-		# If the set was empty when this function was called
-		if len(self.set) == 0:
-			item1 = Element(elem1)
-			item2 = Element(elem2, item1)
-			self.set.update((item1, item2))
+	def make_set(self, N):
+		# Assumes the set was empty when this function is called.
+		# Make 2N nodes, and store it in self.sets
+		for i in range(1, 2*N+1):
+			new_item = Element(i)
+			self.sets.append(new_item)
+
+		"""
+		for item in self.sets:
+			print(str(item), end=' ')
+		"""
 
 
-	def union(self, another_set):
-		# merge another set into this set
-		self.set.update(another_set.set)
-		# may do something about changing the parent pointer after calculating rank
+	def union(self, num1, num2):
+		# Array is 0-based, but N begins at 1
+		item1 = self.sets[num1-1]
+		item2 = self.sets[num2-1]
 
+		print('Pre union: what is in these specific locations?')
+		print('Parent: {0}  Rank: {1}'.format(item1, item1.rank))
+		print('Parent: {0}  Rank: {1}'.format(item2, item2.rank))
 
-	def find(self, item):
-		# if the item is in this disjoint set,
-		# then return the representative
-		if item in self.set:
-			return self.rep
+		item1_parent = self.find_parent(item1.parent)
+		item2_parent = self.find_parent(item2.parent)
+		item1_parent_rank = self.sets[item1_parent-1].rank
+		item2_parent_rank = self.sets[item2_parent-1].rank
+
+		print('What are each item\'s roots?')
+		print('Parent: {0}  Rank: {1}'.format(item1_parent, item1_parent_rank))
+		print('Parent: {0}  Rank: {1}'.format(item2_parent, item2_parent_rank))
+
+		if item1_parent_rank == item2_parent_rank:
+			# Set item1 to be the representative
+			self.sets[item2_parent-1].parent = self.sets[item1_parent-1].parent
+			self.sets[item1_parent-1].rank += 1
+
+		elif item1_parent_rank > item2_parent_rank:
+			# Set item1 to be the representative
+			self.sets[item2_parent-1].parent = self.sets[item1_parent-1].parent
+		else:
+			# Set item2 to be the representative
+			self.sets[item1_parent-1].parent = self.sets[item2_parent-1].parent
+
+		print()
+
+	def find_parent(self, num):
+		# Array is 0-based, but N begins at 1
+		if self.sets[num-1].parent == num:
+			#print('Parent and number match')
+			return num
+		else:
+			# Path compression here
+			#print('Parent and numbers don\'t match.')
+			parent = self.find_parent(self.sets[num-1].parent)
+			self.sets[num-1].parent = parent
+			return parent
+
 
 
 
 
 
 # Testing
+N = 5
+in_str1 = ['1 6', '2 7', '3 8', '4 9', '2 6']
 
-pair1 = Disjoint_Set()
-pair1.make_connected_pair(2, 3)
-print('pair1: {0}'.format(pair1))
-print('size of pair1: {0}'.format(len(pair1)))
-
-pair2 = Disjoint_Set()
-pair2.make_connected_pair(3, 4)
-print('pair2: {0}'.format(pair2))
-print('size of pair2: {0}'.format(len(pair2)))
-
-pair1.union(pair2)
-print('pair1 after merging pair2: {0}'.format(pair1))
+set1 = Disjoint_Set()
+set1.make_set(N)
 
 
+for i in range(N):
+	G, B = (int(temp) for temp in in_str1[i].strip().split())
+	set1.union(G, B)
 
+
+# print(set1.nodes_in_set())
+print(set1.get_counts())
