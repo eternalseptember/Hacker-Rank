@@ -11,11 +11,11 @@ with partial on a new line.
 """
 
 
-class Trie_Node:
-	def __init__(self, complete_word=False):
-		# dictionary to store { character: Trie_Node }
-		self.nodes = {}
-		self.complete_word = complete_word
+class Trie_Node(dict):
+	__slots__ = ['count']
+
+	def __init__(self):
+		self.count = 0
 
 
 	def __repr__(self):
@@ -26,38 +26,24 @@ class Trie_Node:
 		current = self
 
 		for char in str:
-			if char not in current.nodes:
-				current.nodes[char] = Trie_Node()
+			if char not in current:
+				current[char] = Trie_Node()
 
-			current = current.nodes[char]
+			current.count += 1
+			current = current[char]
 
-		current.complete_word = True
 
 
 	def find_partial(self, str):
 		current = self
 
 		for char in str:
-			if char not in current.nodes:
+			if char not in current:
 				return 0
 
-			current = current.nodes[char]
+			current = current[char]
 
-		# at this point, traverse the rest of the trie
-		return self.count_branches(current)
-
-
-	def count_branches(self, current):
-		count = 0
-
-		if current.complete_word:
-			count += 1
-
-		keys = current.nodes.keys()
-		for key in keys:
-			count += self.count_branches(current.nodes[key])
-
-		return count
+		return current.count
 
 
 # n = int(input().strip())
