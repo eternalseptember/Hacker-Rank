@@ -26,7 +26,6 @@ def check_prefixes(list_of_strings):
 		else:
 			for prefix in safe_strings:
 				# print('Checking: {0}  against: {1}'.format(new_string, prefix))
-				# remember to check in both directions
 				if new_string.startswith(prefix):
 					# print('\tNew string: {0}  starts with: {1}'.format(new_string, prefix))
 					return new_string
@@ -62,11 +61,11 @@ else:
 
 # Test case 1 expected result: BAD SET; aabcde
 # Test case 2 expected result: BAD SET; aacghgh
-N = [7, 4, 7, 7]
+N = [7, 4, 4, 4]
 in_str1 = [['aab', 'defgab', 'abcde', 'aabcde', 'cedaaa', 'bbbbbbbbbb', 'jabjjjad'],
 		   ['aab', 'aac', 'aacghgh', 'aabghgh'],
-		   ['aab', 'defgab', 'abc', 'abcde', 'cedaaa', 'bbbbbbbbbb', 'jabjjjad'],
-		   ['aab', 'defgab', 'abcde', 'abc', 'cedaaa', 'bbbbbbbbbb', 'jabjjjad']]
+		   ['aab', 'defgab', 'abc', 'abcde'],
+		   ['aab', 'defgab', 'abcde', 'abc']]
 
 
 for i in range(len(N)):
