@@ -15,27 +15,84 @@ Then next N lines follow, where i_th line contains i_th string.
 """
 
 
+class Trie_Node:
+	def __init__(self, complete_word=False):
+		# dictionary to store { character: Trie_Node }
+		self.nodes = {}
+		self.complete_word = complete_word
+
+
+	def __repr__(self):
+		return str('End: {0}  Nodes: {1}'.format(self.complete_word, self.nodes.keys()))
+
+
+	def insert(self, str):
+		current = self
+
+		for char in str:
+			if char not in current.nodes:
+				current.nodes[char] = Trie_Node()
+
+			current = current.nodes[char]
+
+		current.complete_word = True
+
+
+	def search(self, str):
+		current = self
+
+		for char in str:
+			if char not in current.nodes:
+				return False
+
+			current = current.nodes[char]
+
+		return current.complete_word
+
+
+	def starts_with(self, str):
+		# Does the trie contain str?
+		current = self
+
+		for char in str:
+			if char not in current.nodes:
+				return False
+
+			current = current.nodes[char]
+
+		return True
+
+
+	def contains(self, str):
+		# Does the str contain a stored prefix?
+		current = self
+
+		for char in str:
+			if current.complete_word:
+				return True
+
+			current = current.nodes[char]
+
+		return current.complete_word
+
+
+
 def check_prefixes(list_of_strings):
-	bad_string = None
-	safe_strings = []
+	safe_strings = Trie_Node()
 
 	for new_string in list_of_strings:
-		if len(safe_strings) == 0:
-			# print('First string: {0}'.format(new_string))
-			safe_strings.append(new_string)
-		else:
-			for prefix in safe_strings:
-				# print('Checking: {0}  against: {1}'.format(new_string, prefix))
-				if new_string.startswith(prefix):
-					# print('\tNew string: {0}  starts with: {1}'.format(new_string, prefix))
-					return new_string
-				if prefix.startswith(new_string):
-					# print('\tPrefix: {0}  starts with: {1}'.format(prefix, new_string))
-					return new_string
+		try:
+			if safe_strings.starts_with(new_string):
+				return new_string
+			if safe_strings.contains(new_string):
+				return new_string
 
 			# by this point, new string is a safe string
-			safe_strings.append(new_string)
-			# print('\tSafe_strings: {0}'.format(safe_strings))
+			safe_strings.insert(new_string)
+
+		except KeyError:
+			# the trie is empty, so insert string
+			safe_strings.insert(new_string)
 
 	# by this point, this is a good set
 	return None
@@ -59,6 +116,7 @@ else:
 """
 
 
+"""
 # Test case 1 expected result: BAD SET; aabcde
 # Test case 2 expected result: BAD SET; aacghgh
 N = [7, 4, 2, 2]
@@ -83,4 +141,7 @@ for i in range(len(N)):
 		print('BAD SET')
 		print(failed_string)
 	print()
+"""
+
+
 

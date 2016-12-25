@@ -65,8 +65,8 @@ for num in test_cases:
 
 
 	# Write the results to file.
-	test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp1, act1))
-	test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp2, act2))
+	test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp1, act2))
+	test_case_results.write('EXP: {0} \nACT: {1}\n'.format(exp2, act1))
 
 	"""
 	# Write the failed results to file.

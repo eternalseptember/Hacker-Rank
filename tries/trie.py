@@ -38,7 +38,6 @@ class Trie_Node:
 		return current.complete_word
 
 
-
 	def starts_with(self, str):
 		# Does the trie contain str?
 		current = self
