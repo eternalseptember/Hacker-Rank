@@ -61,11 +61,11 @@ else:
 
 # Test case 1 expected result: BAD SET; aabcde
 # Test case 2 expected result: BAD SET; aacghgh
-N = [7, 4, 4, 4]
+N = [7, 4, 2, 2]
 in_str1 = [['aab', 'defgab', 'abcde', 'aabcde', 'cedaaa', 'bbbbbbbbbb', 'jabjjjad'],
 		   ['aab', 'aac', 'aacghgh', 'aabghgh'],
-		   ['aab', 'defgab', 'abc', 'abcde'],
-		   ['aab', 'defgab', 'abcde', 'abc']]
+		   ['abc', 'abcde'],
+		   ['abcde', 'abc']]
 
 
 for i in range(len(N)):
