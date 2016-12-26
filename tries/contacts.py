@@ -12,35 +12,47 @@ with partial on a new line.
 
 
 class Trie_Node(dict):
-	__slots__ = ['count']
-
-	def __init__(self, count=0, is_leaf=False):
+	def __init__(self, count=0):
 		self.count = count
-		self.is_leaf = is_leaf  # Word end
 
 
 	def __repr__(self):
-		return str('Count: {0}  Leaf: {1}  Nodes: {2}'.
-					format(self.count, self.is_leaf, self.keys()))
+		return str('Count: {0}  Nodes: {1}'.
+					format(self.count, self.keys()))
 
 
 def insert(head, str):
 	current = head
 	current.count += 1  # Placed here for recursive calls
+	print(current)
 
 	for key in current.keys():
+		print('Current key: {0}'.format(key))
 		prefix, post_key, post_str = get_prefix(key, str)
 
 		if post_key == '':
 			# the key in the dictionary is a prefix for the str
+			child = current[prefix]
+			return insert(child, post_str)
 
 		if prefix != '':
 			# if there is a prefix, split
-			# add node with key's suffix, post_key
+			child = current[key]
+
+			# set up replacement child with key's suffix, post_key
+			new_child = Trie_Node(child.count)
+			new_child[post_key] = child
+
+			# update key-value pairs for this node
+			del current[key]
+			current[prefix] = new_child
+
 			# add node with string's suffix, post_str
+			return insert(new_child, post_str)
 
 	# Gets to this point if there are no keys or all the keys have been iterated
-	current[str] = Trie_Node(1, True)
+	print('inserting key: {0}'.format(str))
+	current[str] = Trie_Node(1)
 
 	return head
 
@@ -48,13 +60,19 @@ def insert(head, str):
 def find_partial(head, str):
 	current = head
 
-	for char in str:
-		if char not in current:
-			return 0
+	for key in current.keys():
+		prefix, post_key, post_str = get_prefix(key, str)
 
-		current = current[char]
+		if post_str == '':
+			# the entire string have been stored as a prefix
+			return current[key].count
 
-	return current.count
+		if post_key == '':
+			# the string might be longer than the entire key
+			return find_partial(current[key], post_str)
+
+	# by this point, there are no matches found
+	return 0
 
 
 def get_prefix(str1, str2):
