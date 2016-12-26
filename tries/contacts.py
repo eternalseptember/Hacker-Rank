@@ -12,6 +12,8 @@ with partial on a new line.
 
 
 class Trie_Node(dict):
+	__slots__ = ['count']
+
 	def __init__(self, count=0):
 		self.count = count
 
@@ -24,15 +26,13 @@ class Trie_Node(dict):
 def insert(head, str):
 	current = head
 	current.count += 1  # Placed here for recursive calls
-	print(current)
 
 	for key in current.keys():
-		print('Current key: {0}'.format(key))
 		prefix, post_key, post_str = get_prefix(key, str)
 
 		if post_key == '':
 			# the key in the dictionary is a prefix for the str
-			child = current[prefix]
+			child = current[key]
 			return insert(child, post_str)
 
 		if prefix != '':
@@ -48,13 +48,10 @@ def insert(head, str):
 			current[prefix] = new_child
 
 			# add node with string's suffix, post_str
-			return insert(new_child, post_str)
+			return insert(current[prefix], post_str)
 
 	# Gets to this point if there are no keys or all the keys have been iterated
-	print('inserting key: {0}'.format(str))
 	current[str] = Trie_Node(1)
-
-	return head
 
 
 def find_partial(head, str):
@@ -100,7 +97,7 @@ for i in range(len(n)):
 		opp, name = in_str1[i][j].strip().split()
 
 		if opp == 'add':
-			head = insert(head, name)
+			insert(head, name)
 		else:
 			matches = find_partial(head, name)
 			print(matches)
