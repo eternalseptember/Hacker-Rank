@@ -12,6 +12,47 @@ s is disconnected from a node, print -1 as the distance to that node.
 """
 
 
+def calc_distance(n, s, edges_list):
+	# populate adjancency list
+	nodes = {}
+	for edge in edges_list:
+		u, v = (edge)
+
+		if u not in nodes:
+			nodes[u] = []
+		nodes[u].append(v)
+
+		if v not in nodes:
+			nodes[v] = []
+		nodes[v].append(u)
+
+	print(nodes)
+
+	# node = i + 1
+	dist = [0 for i in range(n)]
+	for i in range(n):
+		if s == i + 1:
+			# starting node
+			continue
+
+		if (i + 1) not in nodes:
+			# node has no edges
+			dist[i] = -1
+			continue
+
+		if (i + 1) in nodes[s]:
+			# if there's a direct connection
+			# edge between any two nodes is 6
+			dist[i] = 6
+
+
+
+	# delete starting node
+	del dist[s-1]
+
+	return dist
+
+
 
 
 # setting up test case 1. expected answer:
@@ -44,5 +85,8 @@ for i in range(q):
 	# s = int(input().strip())
 	inp = in_str1.pop(0)
 	s = int(inp.strip())
+
+	dist_list = calc_distance(n, s, edges_list)
+	print(*dist_list, sep=' ')
 
 
