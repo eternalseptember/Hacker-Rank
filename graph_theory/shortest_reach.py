@@ -14,44 +14,126 @@ s is disconnected from a node, print -1 as the distance to that node.
 
 def calc_distance(n, s, edges_list):
 	# populate adjancency list
-	nodes = {}
+	graph = {}
 	for edge in edges_list:
 		u, v = (edge)
 
-		if u not in nodes:
-			nodes[u] = []
-		nodes[u].append(v)
+		if u not in graph:
+			graph[u] = []
+		graph[u].append(v)
 
-		if v not in nodes:
-			nodes[v] = []
-		nodes[v].append(u)
+		if v not in graph:
+			graph[v] = []
+		graph[v].append(u)
 
-	print(nodes)
+	# Dijkstra's algorithm
+	map_heap = {}  # keeps track of minimum
+	dist_map = {}  # shortest distance from source node
+	path_map = {}  # key: node; value: node's parent
 
-	# node = i + 1
+	# initialize the map heap
+	for i in range(1, n+1):
+		map_heap[i] = None
+
+	# source node's distance is zero
+	map_heap[s] = 0
+	path_map[s] = None
+	dist_length = 6  # weighted graph, but all edges are weighed equally
+
+	while len(map_heap) > 0:
+		# at the beginning of every iteration, find the min value,
+		# store it in dist_map, then remove it from map_heap
+		min_index = get_min(map_heap)
+		dist_map[min_index] = map_heap[min_index]
+		del map_heap[min_index]
+
+		# find the distance to source for every node connected to min_index
+		connections = graph[min_index]
+		print(connections)
+		for node in connections:
+			if node in dist_map:
+				continue
+			else:
+				if map_heap[node] is None:
+					if min_index == s:
+						map_heap[node] = dist_length
+					else:
+						# traverse the known nodes, then add for total distance
+						path = find_shortest_path_to_source(s, node, path_map)
+						map_heap[node] = len(path) * dist_length
+
+					path_map[node] = min_index
+
+				else:
+					# check if the new distance is lower than the distance in map_heap
+					path = find_shortest_path_to_source(s, node, path_map)
+					new_dist = len(path) * dist_length
+
+					if new_dist < map_heap[node]:
+						map_heap[node] = new_dist
+						# change the parent node
+						#path_map[] = node
+
+
+	# format the answer
 	dist = [0 for i in range(n)]
 	for i in range(n):
-		if s == i + 1:
-			# starting node
-			continue
-
-		if (i + 1) not in nodes:
-			# node has no edges
+		# node = i + 1 
+		if (i + 1) in dist_map:
+			dist[i] = dist_map[i + 1]
+		else:
 			dist[i] = -1
-			continue
-
-		if (i + 1) in nodes[s]:
-			# if there's a direct connection
-			# edge between any two nodes is 6
-			dist[i] = 6
-
-
 
 	# delete starting node
 	del dist[s-1]
 
+
+	print('Graph', end=' ')
+	print(graph)
+	print('Map heap', end=' ')
+	print(map_heap)
+	print('Dist map', end=' ')
+	print(dist_map)
+	print('Path map', end=' ')
+	print(path_map)
+
+
 	return dist
 
+
+
+def get_min(map_heap):
+	# Output the key corresponding to the lowest value
+	# In the event of a tie, returns the first set found
+	lowest = None
+	lowest_key = None
+
+	for key in map_heap.keys():
+		if map_heap[key] is None:
+			continue
+		else:
+			if (lowest is None) or (map_heap[key] < lowest):
+				lowest = map_heap[key]
+				lowest_key = key
+
+	return lowest_key
+
+
+def find_shortest_path_to_source(source_node, final_node, path_map):
+	current_node = final_node
+	source_found = False
+	path = [current_node]
+
+	while source_found is False:
+		parent_node = path_map[current_node]
+		path.append(parent_node)
+
+		if parent_node == s:
+			source_found = True
+		else:
+			current_node = parent_node
+
+	return path
 
 
 

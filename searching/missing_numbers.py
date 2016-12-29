@@ -44,3 +44,4 @@ listB.subtract(listA)
 for val in listB:
 	if listB[val] > 0:
 		print('{0}'.format(val), end=' ')
+
