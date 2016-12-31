@@ -20,11 +20,13 @@ def calc_distance(n, s, edges_list):
 
 		if u not in graph:
 			graph[u] = []
-		graph[u].append(v)
+		if v not in graph[u]:
+			graph[u].append(v)
 
 		if v not in graph:
 			graph[v] = []
-		graph[v].append(u)
+		if u not in graph[v]:
+			graph[v].append(u)
 
 	# Dijkstra's algorithm
 	map_heap = {}  # keeps track of minimum
@@ -44,18 +46,30 @@ def calc_distance(n, s, edges_list):
 		# At the beginning of every iteration, find the min value.
 		# If min value is not None, then store it in dist_map and
 		# then remove it from map_heap.
-		# If min value is none, then the node is not connected to the source.
 		min_index = get_min(map_heap)
 
+		#print('min_index: {0}'.format(min_index))
+
+	# If min value is none, then the node is not connected to the source.
 		if min_index is None:
 			break
 
 		dist_map[min_index] = map_heap[min_index]
 		del map_heap[min_index]
 
-		# find the distance to source for every node connected to min_index
-		connections = graph[min_index]
+		try:
+			# find the distance to source for every node connected to min_index
+			connections = graph[min_index]
+		except KeyError:
+			# the source node has no connections
+			break
+
+		#print('connections: ', end=' ')
+		#print(connections)
+
 		for node in connections:
+			#print('node: {0}'.format(node))
+
 			if node in dist_map:
 				continue
 			else:
@@ -64,7 +78,9 @@ def calc_distance(n, s, edges_list):
 						map_heap[node] = dist_length
 					else:
 						# traverse the known nodes, then multiply for total distance
-						path = find_shortest_path_to_source(s, node, path_map)
+						print('\tNo distance recorded yet, so trying to find path to source.')
+						print('\tsource: {0}  min_index: {1}  node: {2}'.format(s, min_index, node))
+						path = find_shortest_path_to_source(s, min_index, path_map)
 						map_heap[node] = len(path) * dist_length
 
 					path_map[node] = min_index
@@ -120,7 +136,7 @@ def find_shortest_path_to_source(source_node, final_node, path_map):
 		parent_node = path_map[current_node]
 		path.append(parent_node)
 
-		if parent_node == s:
+		if parent_node == source_node:
 			source_found = True
 		else:
 			current_node = parent_node
@@ -133,6 +149,7 @@ def find_shortest_path_to_source(source_node, final_node, path_map):
 # 6 6 -1
 # -1 6
 
+"""
 # Number of queries
 # q = int(input().strip())
 q = 2
@@ -162,5 +179,5 @@ for i in range(q):
 
 	dist_list = calc_distance(n, s, edges_list)
 	print(*dist_list, sep=' ')
-
+"""
 
