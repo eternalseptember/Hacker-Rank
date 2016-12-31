@@ -41,15 +41,20 @@ def calc_distance(n, s, edges_list):
 	dist_length = 6  # weighted graph, but all edges are weighed equally
 
 	while len(map_heap) > 0:
-		# at the beginning of every iteration, find the min value,
-		# store it in dist_map, then remove it from map_heap
+		# At the beginning of every iteration, find the min value.
+		# If min value is not None, then store it in dist_map and
+		# then remove it from map_heap.
+		# If min value is none, then the node is not connected to the source.
 		min_index = get_min(map_heap)
+
+		if min_index is None:
+			break
+
 		dist_map[min_index] = map_heap[min_index]
 		del map_heap[min_index]
 
 		# find the distance to source for every node connected to min_index
 		connections = graph[min_index]
-		print(connections)
 		for node in connections:
 			if node in dist_map:
 				continue
@@ -58,7 +63,7 @@ def calc_distance(n, s, edges_list):
 					if min_index == s:
 						map_heap[node] = dist_length
 					else:
-						# traverse the known nodes, then add for total distance
+						# traverse the known nodes, then multiply for total distance
 						path = find_shortest_path_to_source(s, node, path_map)
 						map_heap[node] = len(path) * dist_length
 
@@ -71,14 +76,12 @@ def calc_distance(n, s, edges_list):
 
 					if new_dist < map_heap[node]:
 						map_heap[node] = new_dist
-						# change the parent node
-						#path_map[] = node
-
+						path_map[node] = min_index  # update the parent node
 
 	# format the answer
 	dist = [0 for i in range(n)]
 	for i in range(n):
-		# node = i + 1 
+		# node = i + 1
 		if (i + 1) in dist_map:
 			dist[i] = dist_map[i + 1]
 		else:
@@ -86,17 +89,6 @@ def calc_distance(n, s, edges_list):
 
 	# delete starting node
 	del dist[s-1]
-
-
-	print('Graph', end=' ')
-	print(graph)
-	print('Map heap', end=' ')
-	print(map_heap)
-	print('Dist map', end=' ')
-	print(dist_map)
-	print('Path map', end=' ')
-	print(path_map)
-
 
 	return dist
 
