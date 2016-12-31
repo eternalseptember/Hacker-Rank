@@ -65,18 +65,20 @@ for num in test_cases:
 		# problem-specific: format the answer
 		act = ''
 		for result in dist_list:
-			act += ' '.join(str(x) for x in dist_list)
+			act += str(result)
+			act += ' '
+		act += '\n'
 
 		# Write the results to file.
 		# test_case_results.write('EXP: {0}  ACT: {1}\n'.format(exp, act))
 
 		# Write the failed results to file.
 		if exp != act:
-			test_case_results.write(matr_str)
+			test_case_results.write(act)
 
 
 		# Lets me know a test case within HR's input is finished.
-		print('\t\tHR\'s test case completed.')
+		# print('\t\tHR\'s test case completed.')
 
 	# After looping with T:
 	# Might need to copy and paste file write functions here.
@@ -87,6 +89,6 @@ for num in test_cases:
 	test_case_expected.close()
 
 	# Lets me know which test case is finished.
-	print('\t\tTest case {0} completed.'.format(num))
+	# print('\t\tTest case {0} completed.'.format(num))
 
 print('Done!')

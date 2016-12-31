@@ -78,8 +78,8 @@ def calc_distance(n, s, edges_list):
 						map_heap[node] = dist_length
 					else:
 						# traverse the known nodes, then multiply for total distance
-						print('\tNo distance recorded yet, so trying to find path to source.')
-						print('\tsource: {0}  min_index: {1}  node: {2}'.format(s, min_index, node))
+						#print('\tNo distance recorded yet, so trying to find path to source.')
+						#print('\tsource: {0}  min_index: {1}  node: {2}'.format(s, min_index, node))
 						path = find_shortest_path_to_source(s, min_index, path_map)
 						map_heap[node] = len(path) * dist_length
 
