@@ -18,33 +18,109 @@ Hermione by guessing correctly; otherwise, print 'Oops!'.
 
 
 def count_multiple_paths(N, M, matrix):
-	count = 0
-	portkey_pos = None
 	start_pos = None
+	path = [[0 for col in range(M)] for row in range(N)]
 
-	# find the porkey and starting positions
-	for i in range(N):  # rows
-		for j in range(M):  # cols
-			if matrix[i][j] == '*':
-				portkey_pos = (i, j)
-			if matrix[i][j] == 'M':
-				start_pos = (i, j)
+	# find the starting position
+	for row in range(N):
+		for col in range(M):
+			if matrix[row][col] == 'M':
+				start_pos = (row, col)
+				path[row][col] = 1
 
-			if (portkey_pos is not None) and (start_pos is not None):
+			if start_pos is not None:
 				break
 
-		if (portkey_pos is not None) and (start_pos is not None):
-				break
+		if start_pos is not None:
+			break
 
-	print('Portkey: {0}'.format(portkey_pos))
-	print('Starting: {0}'.format(start_pos))
+	# look for the portkey
+	row, col = (start_pos)
+	found = find_path(N, M, matrix, row, col, path)
+
+	# count the number of times multiple paths are possible
+	if found:
+		count = multiple_choices_possible(start_pos, matrix, path, N, M)
+	else:
+		count = 0
+
+	#print('Count: {0}'. format(count))
+	return count
+
+
+def multiple_choices_possible(start_pos, matrix, path_matrix, N, M):
+	count = 0
+
+	for row in range(N):
+		for col in range(M):
+			if path_matrix[row][col] == 1:
+				possible_directions = 0
+				impossible_directions = 0
+
+				four_directions = [(row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1)]
+
+				for direction in four_directions:
+					new_row, new_col = (direction)
+					if not in_bound(N, M, matrix, new_row, new_col):
+						impossible_directions += 1
+						continue
+
+					if matrix[new_row][new_col] != '.':
+						possible_directions += 1
+
+				if possible_directions >= 3:
+					count += 1
+				elif possible_directions == 2:
+					if impossible_directions > 0:
+						count += 1
 
 	return count
 
 
-# def have_mult_paths(x, y):
-	# possible choices: left, right, up, down
-	# take out backwards direction
+def find_path(N, M, matrix, row, col, path_matrix):
+	# if the position contains a portkey:
+	if matrix[row][col] == '*':
+		path_matrix[row][col] = 1
+		return True
+	# if the position contains a tree:
+	if matrix[row][col] == 'X':
+		path_matrix[row][col] = -1
+		return False
+
+	# mark spot as part of the solution path:
+	path_matrix[row][col] = 1
+
+	# search in four directions
+	four_directions = [(row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1)]
+	for direction in four_directions:
+		new_row, new_col = (direction)
+
+		if not in_bound(N, M, matrix, new_row, new_col):
+			continue
+		# skip if this spot has been visited before
+		elif path_matrix[new_row][new_col] != 0:
+			continue
+		else:
+			if find_path(N, M, matrix, new_row, new_col, path_matrix):
+				path_matrix[new_row][new_col] = 1
+				return True
+
+	# by this point, this spot is not a part of the solution
+	path_matrix[row][col] = -1
+	return False
+
+
+def in_bound(N, M, matrix, row, col):
+	# valid values for row is range(0, N):
+	if (row < 0) or (row >= N):
+		return False
+	# valid values for col is range(0, M):
+	if (col < 0) or (col >= M):
+		return False
+	return True
+
+
+
 
 
 """
@@ -72,7 +148,7 @@ in_str2 = [['*.M', '.X.'],
 		   ['.X.X......X', '.X*.X.XXX.X', '.XX.X.XM...', '......XXXX.'],
 		   ['.X.X......X', '.X*.X.XXX.X', '.XX.X.XM...', '......XXXX.']]
 in_str3 = ['1', '3', '4']
-
+# should be Impressed, Impressed, Oops!
 
 for i in range(T):
 	N, M = (int(temp) for temp in in_str1[i].strip().split(' '))
@@ -84,10 +160,12 @@ for i in range(T):
 
 	K = int(in_str3[i].strip())
 
+	#print('Guess: {0}'.format(K))
 	if count_multiple_paths(N, M, matrix) == K:
 		print('Impressed')
 	else:
 		print('Oops!')
+	print()
 
 
 
