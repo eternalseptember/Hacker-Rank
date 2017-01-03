@@ -44,35 +44,39 @@ def count_multiple_paths(N, M, matrix):
 	else:
 		count = 0
 
-	#print('Count: {0}'. format(count))
+	print('Count: {0}'. format(count))
 	return count
 
 
 def multiple_choices_possible(start_pos, matrix, path_matrix, N, M):
 	count = 0
+	row, col = (start_pos)
+	found = False
 
-	for row in range(N):
-		for col in range(M):
-			if path_matrix[row][col] == 1:
-				possible_directions = 0
-				impossible_directions = 0
+	while found is False:
+		# unmark current spot to prevent recursion errors
+		path_matrix[row][col] = 0
 
-				four_directions = [(row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1)]
+		possible_directions = 0
+		four_directions = [(row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1)]
 
-				for direction in four_directions:
-					new_row, new_col = (direction)
-					if not in_bound(N, M, matrix, new_row, new_col):
-						impossible_directions += 1
-						continue
+		for direction in four_directions:
+			new_row, new_col = (direction)
+			if not in_bound(N, M, matrix, new_row, new_col):
+				continue
+			if matrix[new_row][new_col] == '.':
+				possible_directions += 1
+			if path_matrix[new_row][new_col] == 1:
+				next_pos = (new_row, new_col)
 
-					if matrix[new_row][new_col] != '.':
-						possible_directions += 1
+		if possible_directions >= 3:
+			count += 1
+		elif (possible_directions == 2) and ((row, col) == start_pos):
+			count += 1
 
-				if possible_directions >= 3:
-					count += 1
-				elif possible_directions == 2:
-					if impossible_directions > 0:
-						count += 1
+		row, col = (next_pos)
+		if matrix[row][col] == '*':
+			found = True
 
 	return count
 
@@ -160,7 +164,7 @@ for i in range(T):
 
 	K = int(in_str3[i].strip())
 
-	#print('Guess: {0}'.format(K))
+	print('Guess: {0}'.format(K))
 	if count_multiple_paths(N, M, matrix) == K:
 		print('Impressed')
 	else:
