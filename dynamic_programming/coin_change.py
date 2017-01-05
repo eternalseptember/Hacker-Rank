@@ -24,10 +24,10 @@ def make_change(total, num_of_coins, list_of_coins):
 	list[0] = 1
 
 	for coin in range(0, num_of_coins):
-		for j in range(list_of_coins[coin], total+1):
-			list[j] += list[j - list_of_coins[coin]]
+		for change in range(list_of_coins[coin], total+1):
+			list[change] += list[change - list_of_coins[coin]]
 
-	print(list)
+	#print(list)
 	return list[total]
 
 
