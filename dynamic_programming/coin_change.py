@@ -17,30 +17,18 @@ dollars using an infinite supply of our m types of coins.
 """
 
 
-def make_change(total, list_of_coins):
-	# base cases
-	if total <= 0:
-		return 0
-	elif len(list_of_coins) == 0:
-		return 0
-	elif len(list_of_coins) == 1:
-		if total % list_of_coins[0] == 0:
-			return 1
-		else:
-			return 0
+def make_change(total, num_of_coins, list_of_coins):
+	list = [0 for i in range(total + 1)]
 
-	total_ways = 0
-	first_coin = list_of_coins.pop()
-	first_coin_max = total // first_coin
+	# base case: one way to make change for 0 dollars
+	list[0] = 1
 
-	for first_coin_amt in range(0, first_coin_max + 1):
-		remaining = total - (first_coin * first_coin_amt)
-		total_ways += make_change(remaining, list_of_coins)
+	for coin in range(0, num_of_coins):
+		for j in range(list_of_coins[coin], total+1):
+			list[j] += list[j - list_of_coins[coin]]
 
-	return total_ways
-
-
-
+	print(list)
+	return list[total]
 
 
 
@@ -48,7 +36,7 @@ def make_change(total, list_of_coins):
 n, m = (int(x) for x in input().strip().split(' '))
 list_of_coins = [int(x) for x in input().strip().split(' ')]
 list_of_coins.sort()
-ways_to_make_change = make_change(n, list_of_coins)
+ways_to_make_change = make_change(n, m, list_of_coins)
 print(ways_to_make_change)
 """
 
@@ -65,10 +53,9 @@ for i in range(len(in_str1)):
 	list_of_coins = [int(x) for x in in_str2[i].strip().split(' ')]
 	list_of_coins.sort()
 
-	print('total amount: {0},  coins:'.format(n), end=' ')
-	print(list_of_coins)
-	ways_to_make_change = make_change(n, list_of_coins)
+	ways_to_make_change = make_change(n, m, list_of_coins)
 	print(ways_to_make_change)
+	print()
 
 
 
