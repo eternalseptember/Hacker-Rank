@@ -44,7 +44,7 @@ def count_multiple_paths(N, M, matrix):
 	else:
 		count = 0
 
-	print('Count: {0}'. format(count))
+	# print('Count: {0}'. format(count))
 	return count
 
 
@@ -58,25 +58,37 @@ def multiple_choices_possible(start_pos, matrix, path_matrix, N, M):
 		path_matrix[row][col] = 0
 
 		possible_directions = 0
+		impossible_directions = 0
+		adj_to_start = False
 		four_directions = [(row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1)]
 
 		for direction in four_directions:
 			new_row, new_col = (direction)
 			if not in_bound(N, M, matrix, new_row, new_col):
+				impossible_directions += 1
 				continue
-			if matrix[new_row][new_col] == '.':
+			if (matrix[new_row][new_col] == '.') or (matrix[new_row][new_col] == '*'):
 				possible_directions += 1
+			elif (matrix[new_row][new_col] == 'M'):
+				adj_to_start = True
 			if path_matrix[new_row][new_col] == 1:
 				next_pos = (new_row, new_col)
 
-		if possible_directions >= 3:
+				if matrix[new_row][new_col] == '*':
+					found = True
+
+		if (possible_directions >= 3):
+			# print('3+ dirs')
 			count += 1
-		elif (possible_directions == 2) and ((row, col) == start_pos):
-			count += 1
+		elif (possible_directions == 2):
+			if ((row, col) == start_pos):
+				# print('fork in starting position')
+				count += 1
+			elif adj_to_start and (impossible_directions == 1):
+				# print('next to edge and start pos')
+				count += 1
 
 		row, col = (next_pos)
-		if matrix[row][col] == '*':
-			found = True
 
 	return count
 
@@ -145,14 +157,13 @@ for i in range(T):
 		print('Oops!')
 """
 
-
-T = 3
-in_str1 = ['2 3', '4 11', '4 11']
+# First set of test cases:
+# Should be Impressed, Impressed, Oops!
+T = 2
+in_str1 = ['2 3', '4 11']
 in_str2 = [['*.M', '.X.'],
-		   ['.X.X......X', '.X*.X.XXX.X', '.XX.X.XM...', '......XXXX.'],
 		   ['.X.X......X', '.X*.X.XXX.X', '.XX.X.XM...', '......XXXX.']]
-in_str3 = ['1', '3', '4']
-# should be Impressed, Impressed, Oops!
+in_str3 = ['1', '3']
 
 for i in range(T):
 	N, M = (int(temp) for temp in in_str1[i].strip().split(' '))
@@ -164,12 +175,40 @@ for i in range(T):
 
 	K = int(in_str3[i].strip())
 
-	print('Guess: {0}'.format(K))
+	# print('Guess: {0}'.format(K))
 	if count_multiple_paths(N, M, matrix) == K:
 		print('Impressed')
 	else:
 		print('Oops!')
-	print()
+	# print()
+
+# Second set of test cases
+# All should return 'Impressed'.
+T = 5
+in_str1 = ['3 6', '3 6', '3 6', '3 6', '3 6']
+in_str2 = [['*.M...', '.X.X.X', 'XXX...'],
+		   ['*..M..', '.X.X.X', 'XXX...'],
+		   ['*M....', '.X.X.X', 'XXX...'],
+		   ['*....M', '.X.X.X', 'XXX...'],
+		   ['*.....', '.X.X.X', 'XXX.M.']]
+in_str3 = ['1', '2', '1', '2', '3']
+
+for i in range(T):
+	N, M = (int(temp) for temp in in_str1[i].strip().split(' '))
+
+	matrix = []
+	for j in range(N):
+		row = list(in_str2[i][j].strip())
+		matrix.append(row)
+
+	K = int(in_str3[i].strip())
+
+	# print('Guess: {0}'.format(K))
+	if count_multiple_paths(N, M, matrix) == K:
+		print('Impressed')
+	else:
+		print('Oops!')
+	# print()
 
 
 
