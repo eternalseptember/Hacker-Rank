@@ -17,7 +17,9 @@ Hermione by guessing correctly; otherwise, print 'Oops!'.
 """
 
 
+# modified this for testing purposes
 def count_multiple_paths(N, M, matrix):
+#def count_multiple_paths(N, M, matrix, error_file):
 	start_pos = None
 	path = [[0 for col in range(M)] for row in range(N)]
 
@@ -40,11 +42,28 @@ def count_multiple_paths(N, M, matrix):
 
 	# count the number of times multiple paths are possible
 	if found:
+		"""
+		# for testing purposes, print the path matrix to file
+		error_file.write('SOLUTION TO MAZE\n')
+		matr = ''
+		for row in path:
+			conv_str = ''
+			for num in row:
+				if (num == 0) or (num == -1):
+					conv_str += 'o'
+				else:
+					conv_str += 'v'
+				conv_str += ' '
+			matr += conv_str
+			matr += '\n'
+		error_file.write(matr + '\n')
+		"""
+		# get result
 		count = multiple_choices_possible(start_pos, matrix, path, N, M)
+
 	else:
 		count = 0
 
-	# print('Count: {0}'. format(count))
 	return count
 
 
@@ -59,6 +78,7 @@ def multiple_choices_possible(start_pos, matrix, path_matrix, N, M):
 
 		possible_directions = 0
 		impossible_directions = 0
+		blocked_directions = 0
 		adj_to_start = False
 		four_directions = [(row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1)]
 
@@ -67,26 +87,30 @@ def multiple_choices_possible(start_pos, matrix, path_matrix, N, M):
 			if not in_bound(N, M, matrix, new_row, new_col):
 				impossible_directions += 1
 				continue
-			if (matrix[new_row][new_col] == '.') or (matrix[new_row][new_col] == '*'):
+
+			if (matrix[new_row][new_col] == '.'):
 				possible_directions += 1
+			elif (matrix[new_row][new_col] == '*'):
+				possible_directions += 1
+				found = True
 			elif (matrix[new_row][new_col] == 'M'):
 				adj_to_start = True
+			else:
+				blocked_directions += 1
+
 			if path_matrix[new_row][new_col] == 1:
 				next_pos = (new_row, new_col)
 
-				if matrix[new_row][new_col] == '*':
-					found = True
 
-		if (possible_directions >= 3):
-			# print('3+ dirs')
+		if possible_directions >=3:
 			count += 1
-		elif (possible_directions == 2):
+		elif possible_directions == 2:
 			if ((row, col) == start_pos):
-				# print('fork in starting position')
 				count += 1
-			elif adj_to_start and (impossible_directions == 1):
-				# print('next to edge and start pos')
+			elif (impossible_directions == 1) and (adj_to_start):
 				count += 1
+
+
 
 		row, col = (next_pos)
 
@@ -150,13 +174,15 @@ for i in range(T):
 		matrix.append(row)
 
 	K = int(input().strip())
+	count = count_multiple_paths(N, M, matrix)
 
-	if count_multiple_paths(N, M, matrix) == K:
+	if count == K:
 		print('Impressed')
 	else:
 		print('Oops!')
 """
 
+"""
 # First set of test cases:
 # Should be Impressed, Impressed, Oops!
 T = 2
@@ -174,14 +200,17 @@ for i in range(T):
 		matrix.append(row)
 
 	K = int(in_str3[i].strip())
+	count = count_multiple_paths(N, M, matrix)
 
-	# print('Guess: {0}'.format(K))
-	if count_multiple_paths(N, M, matrix) == K:
+	print('Guess: {0}'.format(K), end=' ')
+	print('Count: {0}'.format(count), end=' ')
+	if count == K:
 		print('Impressed')
 	else:
 		print('Oops!')
-	# print()
+"""
 
+"""
 # Second set of test cases
 # All should return 'Impressed'.
 T = 5
@@ -202,15 +231,15 @@ for i in range(T):
 		matrix.append(row)
 
 	K = int(in_str3[i].strip())
+	count = count_multiple_paths(N, M, matrix)
 
-	# print('Guess: {0}'.format(K))
-	if count_multiple_paths(N, M, matrix) == K:
+	print('Guess: {0}'.format(K), end=' ')
+	print('Count: {0}'.format(count), end=' ')
+	if count == K:
 		print('Impressed')
 	else:
 		print('Oops!')
-	# print()
-
-
+"""
 
 
 
