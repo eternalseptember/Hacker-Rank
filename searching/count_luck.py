@@ -18,8 +18,8 @@ Hermione by guessing correctly; otherwise, print 'Oops!'.
 
 
 # modified this for testing purposes
-def count_multiple_paths(N, M, matrix):
-#def count_multiple_paths(N, M, matrix, error_file):
+# def count_multiple_paths(N, M, matrix):
+def count_multiple_paths(N, M, matrix, error_file):
 	start_pos = None
 	path = [[0 for col in range(M)] for row in range(N)]
 
@@ -109,7 +109,8 @@ def multiple_choices_possible(start_pos, matrix, path_matrix, N, M):
 				count += 1
 			elif (impossible_directions == 1) and (adj_to_start):
 				count += 1
-
+			elif (blocked_directions == 1) and (adj_to_start):
+				count += 1
 
 
 		row, col = (next_pos)
