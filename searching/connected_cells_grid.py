@@ -28,7 +28,6 @@ def find_largest_region(n, m, matrix):
 	filled_cells = []
 	connected_cells = []
 	unconnected_cells = []
-	regions = []
 	largest_region = 0
 
 	# 1.) Get the list of filled cells' coordinates.
@@ -50,26 +49,18 @@ def find_largest_region(n, m, matrix):
 			else:
 				unconnected_cells.append(cell)
 
-		# After the filled_cells list is empty, and before 'while' loops again,
-		# move all connected cells to a region,
-		# move remaining unconnected_cells to filled_cells,
-		# and clear the connected and unconnected lists.
+		# after the filled_cells list is empty, and before 'while' loops again
 		if len(filled_cells) == 0:
-			print('About to loop again...')
-			print(connected_cells)
-			regions.append(connected_cells)
+			# find the size of a region
+			size = len(connected_cells)
+			if size > largest_region:
+				largest_region = size
+
+			# move remaining unconnected_cells to filled_cells,
+			# and clear the connected and unconnected lists.
 			filled_cells = unconnected_cells[:]
 			connected_cells.clear()
 			unconnected_cells.clear()
-
-
-	# 3.) Find the largest region.
-	for region in regions:
-		size = len(region)
-		print('SIZE: {0}'.format(size))
-		print('REGION: {0}'.format(region))
-		if size > largest_region:
-			largest_region = size
 
 	return largest_region
 
@@ -137,7 +128,6 @@ for i in range(n):
 	matrix.append(line)
 
 largest_area = find_largest_region(n, m, matrix)
-print()
 print(largest_area)
 
 
