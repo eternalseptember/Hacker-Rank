@@ -37,8 +37,9 @@ def find_largest_region(n, m, matrix):
 				filled_cells.append((row, col))
 
 	# 2.) Match them up into regions.
+	passes = 0
 	while len(filled_cells) > 0:
-		cell = filled_cells.pop()
+		cell = filled_cells.pop(0)
 
 		# the first cell sets the region
 		if len(connected_cells) == 0:
@@ -49,8 +50,16 @@ def find_largest_region(n, m, matrix):
 			else:
 				unconnected_cells.append(cell)
 
-		# after the filled_cells list is empty, and before 'while' loops again
-		if len(filled_cells) == 0:
+		# after the filled_cells list is empty the first time,
+		# check the remaining unconnected cells again
+		if (len(filled_cells) == 0) and (passes == 0):
+			filled_cells = unconnected_cells[:]
+			unconnected_cells.clear()
+			passes = 1
+
+		# after the filled_cells list is empty, after the second pass
+		# and before 'while' loops again
+		if (len(filled_cells) == 0) and (passes == 1):
 			# find the size of a region
 			size = len(connected_cells)
 			if size > largest_region:
@@ -61,6 +70,7 @@ def find_largest_region(n, m, matrix):
 			filled_cells = unconnected_cells[:]
 			connected_cells.clear()
 			unconnected_cells.clear()
+			passes = 0
 
 	return largest_region
 
@@ -115,12 +125,12 @@ largest_area = find_largest_region(n, m, matrix)
 print(largest_area)
 """
 
-
+"""
 # setting up test case 1
 # expected answer: 5
 n = 4  # rows
 m = 4  # columns
-in_str1 = '1 1 0 0', '0 1 1 0', '0 0 1 0', '1 0 0 0'
+in_str1 = ['1 1 0 0', '0 1 1 0', '0 0 1 0', '1 0 0 0']
 
 matrix = []
 for i in range(n):
@@ -129,5 +139,19 @@ for i in range(n):
 
 largest_area = find_largest_region(n, m, matrix)
 print(largest_area)
+"""
 
+# setting up test case 2
+# expected answer: 9
+n = 7  # rows
+m = 5  # columns
+in_str1 = ['1 1 1 0 1', '0 0 1 0 0', '1 1 0 1 0', '0 1 1 0 0', '0 0 0 0 0', '0 1 0 0 0', '0 0 1 1 0']
+
+matrix = []
+for i in range(n):
+	line = [int(temp) for temp in in_str1[i].strip().split(' ')]
+	matrix.append(line)
+
+largest_area = find_largest_region(n, m, matrix)
+print(largest_area)
 
