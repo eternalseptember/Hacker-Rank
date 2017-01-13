@@ -50,27 +50,23 @@ def find_largest_region(n, m, matrix):
 			else:
 				unconnected_cells.append(cell)
 
-		# after the filled_cells list is empty the first time,
-		# check the remaining unconnected cells again
-		if (len(filled_cells) == 0) and (passes == 0):
+		# after the filled_cells list empties and before the 'while' loop iterates again...
+		if (len(filled_cells) == 0):
 			filled_cells = unconnected_cells[:]
 			unconnected_cells.clear()
-			passes = 1
 
-		# after the filled_cells list is empty, after the second pass
-		# and before 'while' loops again
-		if (len(filled_cells) == 0) and (passes == 1):
-			# find the size of a region
-			size = len(connected_cells)
-			if size > largest_region:
-				largest_region = size
-
-			# move remaining unconnected_cells to filled_cells,
-			# and clear the connected and unconnected lists.
-			filled_cells = unconnected_cells[:]
-			connected_cells.clear()
-			unconnected_cells.clear()
-			passes = 0
+			# after the filled_cells list is empty the first time,
+			# check the remaining unconnected cells again
+			if (passes == 0):
+				passes = 1
+			else:
+				# find the size of a region
+				size = len(connected_cells)
+				if size > largest_region:
+					largest_region = size
+				
+				connected_cells.clear()
+				passes = 0
 
 	return largest_region
 
@@ -86,7 +82,6 @@ def is_connected_to_list(list_of_cells, cell):
 			break
 
 	return found
-
 
 
 def is_connected(unknown_cell, cell):
@@ -125,7 +120,7 @@ largest_area = find_largest_region(n, m, matrix)
 print(largest_area)
 """
 
-"""
+
 # setting up test case 1
 # expected answer: 5
 n = 4  # rows
@@ -139,13 +134,28 @@ for i in range(n):
 
 largest_area = find_largest_region(n, m, matrix)
 print(largest_area)
-"""
+
 
 # setting up test case 2
 # expected answer: 9
 n = 7  # rows
 m = 5  # columns
 in_str1 = ['1 1 1 0 1', '0 0 1 0 0', '1 1 0 1 0', '0 1 1 0 0', '0 0 0 0 0', '0 1 0 0 0', '0 0 1 1 0']
+
+matrix = []
+for i in range(n):
+	line = [int(temp) for temp in in_str1[i].strip().split(' ')]
+	matrix.append(line)
+
+largest_area = find_largest_region(n, m, matrix)
+print(largest_area)
+
+
+# setting up test case 3
+# expected answer: 8
+n = 5  # rows
+m = 4  # columns
+in_str1 = ['0 0 1 1', '0 0 1 0', '0 1 1 0', '0 1 0 0', '1 1 0 0']
 
 matrix = []
 for i in range(n):
