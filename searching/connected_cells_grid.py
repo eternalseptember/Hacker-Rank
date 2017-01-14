@@ -57,7 +57,7 @@ def find_largest_region(n, m, matrix):
 
 			# after the filled_cells list is empty the first time,
 			# check the remaining unconnected cells again
-			if (passes == 0):
+			if (passes == 0) and (len(filled_cells) > 0):
 				passes = 1
 			else:
 				# find the size of a region
