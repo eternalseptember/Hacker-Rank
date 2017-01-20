@@ -12,8 +12,12 @@ def merge_sort(list_of_nums):
 
 	# setting up recursion
 	half = length // 2
-	half_1 = merge_sort(list_of_nums[:half])
-	half_2 = merge_sort(list_of_nums[half:])  # second half could be longer
+	half_1 = list_of_nums[:half]
+	half_2 = list_of_nums[half:]    # second half could be longer
+
+	if half > 1:
+		half_1 = merge_sort(half_1)
+		half_2 = merge_sort(half_2)
 
 	sorted_list = []
 	half_1_item = None
@@ -44,6 +48,11 @@ def merge_sort(list_of_nums):
 
 	return sorted_list
 
+
+def merge(left, right):
+	merged = []
+
+	return merged
 
 
 
