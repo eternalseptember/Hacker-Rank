@@ -25,19 +25,17 @@ def merge_sort(list_of_nums):
 def merge(left, right):
 	merged = []
 
+	total_length = len(left) + len(right)
 	left_item = None
 	right_item = None
-	done = False
 
-	while not done:
-		if (len(left) <= 0) or (len(right) <= 0):
-			done = True
-		else:
-			if left_item is None:
-				left_item = left.pop(0)
-			if right_item is None:
-				right_item = right.pop(0)
+	for i in range(total_length):
+		if (left_item is None) and (len(left) > 0):
+			left_item = left.pop(0)
+		if (right_item is None) and (len(right) > 0):
+			right_item = right.pop(0)
 
+		if (left_item is not None) and (right_item is not None):
 			if left_item < right_item:
 				merged.append(left_item)
 				left_item = None
@@ -45,11 +43,12 @@ def merge(left, right):
 				merged.append(right_item)
 				right_item = None
 
-	# if one of the list still has items in it
-	if len(left) > 0:
-		merged.extend(left)
-	elif len(right) > 0:
-		merged.extend(right)
+		elif (left_item is None):
+			merged.append(right_item)
+			right_item = None
+		elif (right_item is None):
+			merged.append(left_item)
+			left_item = None
 
 
 	return merged
