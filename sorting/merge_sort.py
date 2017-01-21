@@ -15,9 +15,8 @@ def merge_sort(list_of_nums):
 	left = list_of_nums[:half]
 	right = list_of_nums[half:]    # second half could be longer
 
-	if half > 1:
-		left = merge_sort(left)
-		right = merge_sort(right)
+	left = merge_sort(left)
+	right = merge_sort(right)
 
 	return merge(left, right)
 
@@ -35,7 +34,13 @@ def merge(left, right):
 		if (right_item is None) and (len(right) > 0):
 			right_item = right.pop(0)
 
-		if (left_item is not None) and (right_item is not None):
+		if (left_item is None):
+			merged.append(right_item)
+			right_item = None
+		elif (right_item is None):
+			merged.append(left_item)
+			left_item = None
+		else:
 			if left_item < right_item:
 				merged.append(left_item)
 				left_item = None
@@ -43,12 +48,7 @@ def merge(left, right):
 				merged.append(right_item)
 				right_item = None
 
-		elif (left_item is None):
-			merged.append(right_item)
-			right_item = None
-		elif (right_item is None):
-			merged.append(left_item)
-			left_item = None
+		
 
 
 	return merged
