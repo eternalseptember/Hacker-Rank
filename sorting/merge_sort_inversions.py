@@ -22,9 +22,11 @@ in_str = ['5', '1 1 1 2 2', '5', '2 1 3 1 2']
 for i in range(d):
 	inp = in_str.pop(0)
 	n = int(inp.strip())
+	# n = int(input().strip())
 
 	inp = in_str.pop(0)
 	arr = [int(temp) for temp in inp.strip().split(' ')]
+	# arr = list(map(int, input().strip().split(' ')))
 
 	inversions = count_inversions(arr)
 	print(inversions)
