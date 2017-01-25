@@ -11,11 +11,12 @@ respective values of arr_0, arr_1, ..., arr_n-1.
 
 
 def count_inversions(size, arr):
+	inversions = 0
 	for j in range(size):
 		for i in range(j):
-			# count inversions here?
-			# inversion if arr_i > arr_j
-	return arr
+			if arr[i] > arr[j]:
+				inversions += 1
+	return inversions
 
 
 
