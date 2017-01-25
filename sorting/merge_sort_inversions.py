@@ -10,7 +10,11 @@ respective values of arr_0, arr_1, ..., arr_n-1.
 """
 
 
-def count_inversions(arr):
+def count_inversions(size, arr):
+	for j in range(size):
+		for i in range(j):
+			# count inversions here?
+			# inversion if arr_i > arr_j
 	return arr
 
 
@@ -28,7 +32,7 @@ for i in range(d):
 	arr = [int(temp) for temp in inp.strip().split(' ')]
 	# arr = list(map(int, input().strip().split(' ')))
 
-	inversions = count_inversions(arr)
+	inversions = count_inversions(n, arr)
 	print(inversions)
 
 
