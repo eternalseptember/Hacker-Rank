@@ -19,7 +19,7 @@ def count_inversions(size, arr):
 	return inversions
 
 
-
+# d = int(input().strip())
 d = 2 # number of datasets
 	  # expected answer: 0 4
 in_str = ['5', '1 1 1 2 2', '5', '2 1 3 1 2']
