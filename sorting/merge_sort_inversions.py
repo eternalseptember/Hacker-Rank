@@ -19,6 +19,54 @@ def count_inversions(size, arr):
 	return inversions
 
 
+def merge_sort(list_of_nums):
+	length = len(list_of_nums)
+	if length <= 1:
+		return list_of_nums
+
+	# setting up recursion
+	half = length // 2
+	left = list_of_nums[:half]
+	right = list_of_nums[half:]  # second half could be longer
+
+	left = merge_sort(left)
+	right = merge_sort(right)
+
+	return merge(left, right)
+
+
+def merge(left, right):
+	merged = []
+
+	total_length = len(left) + len(right)
+	left_item = None
+	right_item = None
+
+	for i in range(total_length):
+		if (left_item is None) and (len(left) > 0):
+			left_item = left.pop(0)
+		if (right_item is None) and (len(right) > 0):
+			right_item = right.pop(0)
+
+		if (left_item is None):
+			merged.append(right_item)
+			right_item = None
+		elif (right_item is None):
+			merged.append(left_item)
+			left_item = None
+		else:
+			if left_item < right_item:
+				merged.append(left_item)
+				left_item = None
+			else:
+				merged.append(right_item)
+				right_item = None
+
+	return merged
+
+
+
+
 # d = int(input().strip())
 d = 2 # number of datasets
 	  # expected answer: 0 4
