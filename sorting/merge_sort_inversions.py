@@ -29,10 +29,12 @@ def merge_sort(list_of_nums):
 	left = list_of_nums[:half]
 	right = list_of_nums[half:]  # second half could be longer
 
-	left = merge_sort(left)
-	right = merge_sort(right)
+	left_inv, left = merge_sort(left)
+	right_inv, right = merge_sort(right)
+	merge_inv, merged = merge(left, right)
+	inv_total = left_inv, right_inv, merge_inv
 
-	return merge(left, right)
+	return inv_total, merged
 
 
 def merge(left, right):
