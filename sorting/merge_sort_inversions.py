@@ -10,13 +10,9 @@ respective values of arr_0, arr_1, ..., arr_n-1.
 """
 
 
-def count_inversions(size, arr):
-	inversions = 0
-	for j in range(size):
-		for i in range(j):
-			if arr[i] > arr[j]:
-				inversions += 1
-	return inversions
+def count_inversions(arr):
+	inv, sorted_arr = merge_sort(arr)
+	return inv
 
 
 def merge_sort(list_of_nums):
@@ -43,6 +39,7 @@ def merge(left, right):
 	total_length = len(left) + len(right)
 	left_item = None
 	right_item = None
+	inv = 0
 
 	for i in range(total_length):
 		if (left_item is None) and (len(left) > 0):
@@ -62,9 +59,10 @@ def merge(left, right):
 				left_item = None
 			else:
 				merged.append(right_item)
+				inv += 1
 				right_item = None
 
-	return merged
+	return inv, merged
 
 
 
@@ -83,7 +81,7 @@ for i in range(d):
 	arr = [int(temp) for temp in inp.strip().split(' ')]
 	# arr = list(map(int, input().strip().split(' ')))
 
-	inversions = count_inversions(n, arr)
+	inversions = count_inversions(arr)
 	print(inversions)
 
 
