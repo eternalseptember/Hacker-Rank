@@ -11,8 +11,8 @@ respective values of arr_0, arr_1, ..., arr_n-1.
 
 
 def count_inversions(arr):
-	inv, sorted_arr = merge_sort(arr)
-	return inv
+	sorted_arr = merge_sort(arr)
+	return sorted_arr
 
 
 def merge_sort(list_of_nums):
@@ -25,12 +25,12 @@ def merge_sort(list_of_nums):
 	left = list_of_nums[:half]
 	right = list_of_nums[half:]  # second half could be longer
 
-	left_inv, left = merge_sort(left)
-	right_inv, right = merge_sort(right)
-	merge_inv, merged = merge(left, right)
-	inv_total = left_inv, right_inv, merge_inv
+	left = merge_sort(left)
+	right = merge_sort(right)
+	inv, merged = merge(left, right)
+	print('inv: {0}'.format(inv))
 
-	return inv_total, merged
+	return merged
 
 
 def merge(left, right):
@@ -59,7 +59,6 @@ def merge(left, right):
 				left_item = None
 			else:
 				merged.append(right_item)
-				inv += 1
 				right_item = None
 
 	return inv, merged
