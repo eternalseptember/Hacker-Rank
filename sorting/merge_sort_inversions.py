@@ -11,26 +11,28 @@ respective values of arr_0, arr_1, ..., arr_n-1.
 
 
 def count_inversions(arr):
-	sorted_arr = merge_sort(arr)
-	return sorted_arr
+	inv, sorted_arr = merge_sort(arr)
+	return inv
 
 
 def merge_sort(list_of_nums):
 	length = len(list_of_nums)
 	if length <= 1:
-		return list_of_nums
+		return 0, list_of_nums
 
 	# setting up recursion
 	half = length // 2
 	left = list_of_nums[:half]
 	right = list_of_nums[half:]  # second half could be longer
 
-	left = merge_sort(left)
-	right = merge_sort(right)
-	inv, merged = merge(left, right)
-	print('inv: {0}'.format(inv))
+	left_inv, left = merge_sort(left)
+	right_inv, right = merge_sort(right)
+	merge_inv, merged = merge(left, right)
+	inv_total = left_inv + right_inv + merge_inv
 
-	return merged
+
+
+	return inv_total, merged
 
 
 def merge(left, right):
@@ -60,6 +62,7 @@ def merge(left, right):
 			else:
 				merged.append(right_item)
 				right_item = None
+				inv += 1
 
 	return inv, merged
 
