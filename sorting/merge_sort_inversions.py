@@ -30,8 +30,6 @@ def merge_sort(list_of_nums):
 	merge_inv, merged = merge(left, right)
 	inv_total = left_inv + right_inv + merge_inv
 
-
-
 	return inv_total, merged
 
 
@@ -63,16 +61,22 @@ def merge(left, right):
 				merged.append(right_item)
 				right_item = None
 				inv += 1
+				# inv += len(left)
 
 	return inv, merged
 
 
 
-
 # d = int(input().strip())
+"""
 d = 2 # number of datasets
 	  # expected answer: 0 4
 in_str = ['5', '1 1 1 2 2', '5', '2 1 3 1 2']
+"""
+
+d = 3 # number of datasets
+	  # expected answer: 0 4 3
+in_str = ['5', '1 1 1 2 2', '5', '2 1 3 1 2', '5', '2 4 1 3 5']
 
 for i in range(d):
 	inp = in_str.pop(0)
