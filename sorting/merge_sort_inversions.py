@@ -60,8 +60,8 @@ def merge(left, right):
 			else:
 				merged.append(right_item)
 				right_item = None
-				inv += 1
-				# inv += len(left)
+				# inv += 1
+				inv += len(left)
 
 	return inv, merged
 
