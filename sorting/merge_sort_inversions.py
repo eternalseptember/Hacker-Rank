@@ -36,24 +36,34 @@ def sort_and_count(list_of_nums):
 def merge_and_count(left, right):
 	merged = []
 
-	print('left: {0}  right: {1}'.format(left, right))
+
 	total_length = len(left) + len(right)
 	left_item = None
 	right_item = None
 	inv = 0
 
+	print('left: {0}  right: {1}'.format(left, right))
+	print('total length: {0}'.format(total_length))
+
+
 	while (len(left) > 0) and (len(right) > 0):
+		print('\twhile loop start. len left: {0}  len right: {1}'.format(len(left), len(right)))
+
 		if left_item is None:
 			left_item = left.pop(0)
+			print('left item is none')
 		if right_item is None:
 			right_item = right.pop(0)
+			print('right item is none')
 
 		if left_item < right_item:
 			merged.append(left_item)
 			left_item = None
+			print('item on list is smaller, so append left')
 		else:
 			merged.append(right_item)
 			right_item = None
+			print('item on right is equal or less than, so append right')
 			inv += len(left)
 
 		print('len left: {0}  len right: {1}'.format(len(left), len(right)))
