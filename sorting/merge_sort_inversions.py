@@ -37,45 +37,52 @@ def merge_and_count(left, right):
 	merged = []
 
 
-	total_length = len(left) + len(right)
 	left_item = None
 	right_item = None
 	inv = 0
 
-	print('left: {0}  right: {1}'.format(left, right))
-	print('total length: {0}'.format(total_length))
+	#print('left: {0}  right: {1}'.format(left, right))
+	#print('total length: {0}'.format(total_length))
 
 
 	while (len(left) > 0) and (len(right) > 0):
-		print('\twhile loop start. len left: {0}  len right: {1}'.format(len(left), len(right)))
+		#print('\twhile loop start. len left: {0}  len right: {1}'.format(len(left), len(right)))
 
 		if left_item is None:
 			left_item = left.pop(0)
-			print('left item is none')
+			#print('left item is none... new left_item: {0}'.format(left_item))
 		if right_item is None:
 			right_item = right.pop(0)
-			print('right item is none')
+			#print('right item is none... new right_item: {0}'.format(right_item))
 
 		if left_item < right_item:
 			merged.append(left_item)
 			left_item = None
-			print('item on list is smaller, so append left')
+			#print('item on list is smaller, so append left')
 		else:
 			merged.append(right_item)
 			right_item = None
-			print('item on right is equal or less than, so append right')
+			#print('item on right is equal or less than, so append right')
 			inv += len(left)
 
-		print('len left: {0}  len right: {1}'.format(len(left), len(right)))
+		#print('merged: {0}'.format(merged))
+		#print('len left: {0}  len right: {1}'.format(len(left), len(right)))
 
-	print('remaining lists. left: {0}  right: {1}'.format(left, right))
+	#print('remaining lists. left: {0}  right: {1}'.format(left, right))
 
 	# now one list is empty
 	if len(left) == 0:
+		if right_item is not None:
+			merged.append(right_item)
 		merged.extend(right)
+		#print('left list empty... append right: {0}'.format(merged))
 	elif len(right) == 0:
+		if left_item is not None:
+			merged.append(left_item)
 		merged.extend(left)
+		#print('right list empty... append left: {0}'.format(merged))
 
+	#print()
 
 	return inv, merged
 
