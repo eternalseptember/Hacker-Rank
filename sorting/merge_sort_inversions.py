@@ -1,6 +1,6 @@
 """
 Input Format:
-The first line contains an integer, d, denoting the number of datasets. 
+The first line contains an integer, d, denoting the number of datasets.
 The 2d subsequent lines describe each respective dataset over two lines:
 
 The first line contains an integer, n, denoting the number of elements
@@ -12,7 +12,7 @@ respective values of arr_0, arr_1, ..., arr_n-1.
 
 def count_inversions(arr):
 	inv, sorted_arr = sort_and_count(arr)
-	return inv, sorted_arr
+	return inv
 
 
 def sort_and_count(list_of_nums):
@@ -43,26 +43,18 @@ def merge_and_count(left, right):
 	inv = 0
 
 	while (left_index < left_size) and (right_index < right_size):
-
-		if left[left_index] < right[right_index]:
+		if left[left_index] <= right[right_index]:
 			merged.append(left[left_index])
 			left_index += 1
-			#print('item on list is smaller, so append left')
 		else:
 			merged.append(right[right_index])
 			right_index += 1
-			#print('item on right is equal or less than, so append right')
 			inv += len(left[left_index:])
-
 
 	if left_index == left_size:
 		merged.extend(right[right_index:])
-		#print('left list empty... append right: {0}'.format(merged))
 	elif right_index == right_size:
 		merged.extend(left[left_index:])
-		#print('right list empty... append left: {0}'.format(merged))
-
-	#print()
 
 	return inv, merged
 
@@ -88,9 +80,9 @@ for i in range(d):
 	arr = [int(temp) for temp in inp.strip().split(' ')]
 	# arr = list(map(int, input().strip().split(' ')))
 
-	#inversions = count_inversions(arr)
-	#print(inversions)
+	inversions = count_inversions(arr)
+	print(inversions)
 
-	inversions, sorted_arr = count_inversions(arr)
-	print('{0}  {1}'.format(inversions, sorted_arr))
+	#inversions, sorted_arr = count_inversions(arr)
+	#print('{0}  {1}'.format(inversions, sorted_arr))
 
