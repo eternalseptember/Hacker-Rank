@@ -49,7 +49,7 @@ def merge_and_count(left, right):
 		else:
 			merged.append(right[right_index])
 			right_index += 1
-			inv += len(left[left_index:])
+			inv += left_size - left_index
 
 	if left_index == left_size:
 		merged.extend(right[right_index:])
