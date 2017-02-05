@@ -61,11 +61,6 @@ def merge_and_count(left, right):
 
 
 # d = int(input().strip())
-"""
-d = 2 # number of datasets
-	  # expected answer: 0 4
-in_str = ['5', '1 1 1 2 2', '5', '2 1 3 1 2']
-"""
 
 d = 3 # number of datasets
 	  # expected answer: 0 4 3
@@ -83,6 +78,5 @@ for i in range(d):
 	inversions = count_inversions(arr)
 	print(inversions)
 
-	#inversions, sorted_arr = count_inversions(arr)
-	#print('{0}  {1}'.format(inversions, sorted_arr))
+
 
