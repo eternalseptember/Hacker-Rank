@@ -36,50 +36,30 @@ def sort_and_count(list_of_nums):
 def merge_and_count(left, right):
 	merged = []
 
-
-	left_item = None
-	right_item = None
+	left_size = len(left)
+	right_size = len(right)
+	left_index = 0
+	right_index = 0
 	inv = 0
 
-	#print('left: {0}  right: {1}'.format(left, right))
-	#print('total length: {0}'.format(total_length))
+	while (left_index < left_size) and (right_index < right_size):
 
-
-	while (len(left) > 0) and (len(right) > 0):
-		#print('\twhile loop start. len left: {0}  len right: {1}'.format(len(left), len(right)))
-
-		if left_item is None:
-			left_item = left.pop(0)
-			#print('left item is none... new left_item: {0}'.format(left_item))
-		if right_item is None:
-			right_item = right.pop(0)
-			#print('right item is none... new right_item: {0}'.format(right_item))
-
-		if left_item < right_item:
-			merged.append(left_item)
-			left_item = None
+		if left[left_index] < right[right_index]:
+			merged.append(left[left_index])
+			left_index += 1
 			#print('item on list is smaller, so append left')
 		else:
-			merged.append(right_item)
-			right_item = None
+			merged.append(right[right_index])
+			right_index += 1
 			#print('item on right is equal or less than, so append right')
-			inv += len(left)
+			inv += len(left[left_index:])
 
-		#print('merged: {0}'.format(merged))
-		#print('len left: {0}  len right: {1}'.format(len(left), len(right)))
 
-	#print('remaining lists. left: {0}  right: {1}'.format(left, right))
-
-	# now one list is empty
-	if len(left) == 0:
-		if right_item is not None:
-			merged.append(right_item)
-		merged.extend(right)
+	if left_index == left_size:
+		merged.extend(right[right_index:])
 		#print('left list empty... append right: {0}'.format(merged))
-	elif len(right) == 0:
-		if left_item is not None:
-			merged.append(left_item)
-		merged.extend(left)
+	elif right_index == right_size:
+		merged.extend(left[left_index:])
 		#print('right list empty... append left: {0}'.format(merged))
 
 	#print()
