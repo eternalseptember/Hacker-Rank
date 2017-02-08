@@ -6,7 +6,6 @@ value, choose the numerically smallest one.
 Your answers should be in decimal form, rounded to a scale of 1 decimal place.
 """
 
-
 from collections import Counter
 
 
@@ -40,7 +39,7 @@ else:
 
 
 # mode
-mode = Counter(arr).most_common(1)
-print(mode)
-
+counts = Counter(arr)
+mode = {val for val in counts if counts[val] == max(counts.values())}
+print(min(mode))
 
